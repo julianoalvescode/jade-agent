@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-09-07",
+  "installerSmokeTestAt": "2026-09-07",
+  "catalog": "https://www.skills.sh",
+  "telemetryDefault": false,
+  "scope": "project",
+  "sources": [
+    {
+      "repository": "https://github.com/anthropics/skills",
+      "skills": ["frontend-design", "webapp-testing"],
+      "auditsAtReview": {
+        "frontend-design": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
+        "webapp-testing": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/hersti/ui-engineering",
+      "skills": ["ui-recon"],
+      "auditsAtReview": {
+        "ui-recon": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/thrillmade/agent-skills",
+      "skills": ["spacing-system"],
+      "auditsAtReview": {
+        "spacing-system": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/figma/mcp-server-guide",
+      "skills": ["figma-design-to-code"],
+      "auditsAtReview": {
+        "figma-design-to-code": [
+          "Gen Agent Trust Hub: pass",
+          "Socket: pass",
+          "Snyk: warn"
+        ]
+      }
+    },
+    {
+      "repository": "https://github.com/vercel-labs/agent-skills",
+      "skills": ["vercel-react-best-practices", "vercel-composition-patterns", "web-design-guidelines"],
+      "auditsAtReview": {
+        "vercel-react-best-practices": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
+        "vercel-composition-patterns": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
+        "web-design-guidelines": ["Gen Agent Trust Hub: pass", "Socket: warn", "Snyk: warn", "Runlayer: pass", "ZeroLeaks: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/mattpocock/skills",
+      "skills": ["domain-modeling", "tdd"],
+      "auditsAtReview": {
+        "domain-modeling": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
+        "tdd": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/addyosmani/agent-skills",
+      "skills": ["api-and-interface-design", "code-review-and-quality"],
+      "auditsAtReview": {
+        "api-and-interface-design": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
+        "code-review-and-quality": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/wshobson/agents",
+      "skills": ["javascript-testing-patterns"],
+      "auditsAtReview": {
+        "javascript-testing-patterns": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/claude-dev-suite/claude-dev-suite",
+      "skills": ["typescript-quality"],
+      "auditsAtReview": {
+        "typescript-quality": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/currents-dev/playwright-best-practices-skill",
+      "skills": ["playwright-best-practices"],
+      "auditsAtReview": {
+        "playwright-best-practices": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/asyrafhussin/agent-skills",
+      "skills": ["state-management"],
+      "auditsAtReview": {
+        "state-management": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/pproenca/dot-skills",
+      "skills": ["react-hook-form"],
+      "auditsAtReview": {
+        "react-hook-form": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/sergiodxa/agent-skills",
+      "skills": ["owasp-security-check"],
+      "auditsAtReview": {
+        "owasp-security-check": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    },
+    {
+      "repository": "https://github.com/obra/superpowers",
+      "skills": ["systematic-debugging", "verification-before-completion"],
+      "auditsAtReview": {
+        "systematic-debugging": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
+        "verification-before-completion": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
+      }
+    }
+  ]
+}
