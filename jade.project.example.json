@@ -1,0 +1,10 @@
+{
+  "projectName": "",
+  "frontend": {"repository": "", "localPath": "", "baseBranch": "", "validationCommands": []},
+  "backends": [{"name": "", "repository": "", "localPath": "", "ref": "", "contractPaths": []}],
+  "jira": {"siteUrl": "", "projectKey": ""},
+  "confluence": {"siteUrl": "", "spaceKey": "", "authoritativePages": []},
+  "environments": [{"name": "", "url": "", "deploymentEvidenceUrl": ""}],
+  "figma": {"fileUrls": []},
+  "definitionOfDone": []
+}

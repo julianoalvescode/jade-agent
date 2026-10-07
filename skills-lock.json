@@ -1,118 +1,179 @@
 {
-  "schemaVersion": 1,
-  "reviewedAt": "2026-09-07",
-  "installerSmokeTestAt": "2026-09-07",
-  "catalog": "https://www.skills.sh",
-  "telemetryDefault": false,
-  "scope": "project",
+  "schemaVersion": 2,
+  "bundleVersion": "2.0.0",
+  "resolvedAt": "2026-10-07",
+  "installer": "python-standard-library+git",
+  "localSkills": [
+    "jade-workflow",
+    "jade-delivery",
+    "jade-frontend",
+    "frontend-quality-gate"
+  ],
   "sources": [
     {
       "repository": "https://github.com/anthropics/skills",
-      "skills": ["frontend-design", "webapp-testing"],
-      "auditsAtReview": {
-        "frontend-design": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
-        "webapp-testing": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "frontend-design",
+          "path": "skills/frontend-design"
+        },
+        {
+          "name": "webapp-testing",
+          "path": "skills/webapp-testing"
+        }
+      ],
+      "revision": "683bc88e56f3e09ba94f7055977f3d3aa499f202"
     },
     {
       "repository": "https://github.com/hersti/ui-engineering",
-      "skills": ["ui-recon"],
-      "auditsAtReview": {
-        "ui-recon": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "ui-recon",
+          "path": "skills/ui-recon"
+        }
+      ],
+      "revision": "0f55239978e1e894c778d8ee40648ffb5bbe1b1c"
     },
     {
       "repository": "https://github.com/thrillmade/agent-skills",
-      "skills": ["spacing-system"],
-      "auditsAtReview": {
-        "spacing-system": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "spacing-system",
+          "path": "skills/spacing-system"
+        }
+      ],
+      "revision": "1bec3149c54826bf58711b16a15754547ffc84bf"
     },
     {
       "repository": "https://github.com/figma/mcp-server-guide",
-      "skills": ["figma-design-to-code"],
-      "auditsAtReview": {
-        "figma-design-to-code": [
-          "Gen Agent Trust Hub: pass",
-          "Socket: pass",
-          "Snyk: warn"
-        ]
-      }
+      "skills": [
+        {
+          "name": "figma-design-to-code",
+          "path": "skills/figma-design-to-code"
+        }
+      ],
+      "revision": "f0493295acf5f7cbdebcbcc483c06de814420cb1"
     },
     {
       "repository": "https://github.com/vercel-labs/agent-skills",
-      "skills": ["vercel-react-best-practices", "vercel-composition-patterns", "web-design-guidelines"],
-      "auditsAtReview": {
-        "vercel-react-best-practices": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
-        "vercel-composition-patterns": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
-        "web-design-guidelines": ["Gen Agent Trust Hub: pass", "Socket: warn", "Snyk: warn", "Runlayer: pass", "ZeroLeaks: pass"]
-      }
+      "skills": [
+        {
+          "name": "vercel-react-best-practices",
+          "path": "skills/react-best-practices"
+        },
+        {
+          "name": "vercel-composition-patterns",
+          "path": "skills/composition-patterns"
+        },
+        {
+          "name": "web-design-guidelines",
+          "path": "skills/web-design-guidelines"
+        }
+      ],
+      "revision": "063bee94c3f4df8453406c830b0a7df0f2860278"
     },
     {
       "repository": "https://github.com/mattpocock/skills",
-      "skills": ["domain-modeling", "tdd"],
-      "auditsAtReview": {
-        "domain-modeling": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
-        "tdd": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "domain-modeling",
+          "path": "skills/engineering/domain-modeling"
+        },
+        {
+          "name": "tdd",
+          "path": "skills/engineering/tdd"
+        }
+      ],
+      "revision": "f3fc5632f401156837ee3872f14fe33ccf1024ea"
     },
     {
       "repository": "https://github.com/addyosmani/agent-skills",
-      "skills": ["api-and-interface-design", "code-review-and-quality"],
-      "auditsAtReview": {
-        "api-and-interface-design": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
-        "code-review-and-quality": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "api-and-interface-design",
+          "path": "skills/api-and-interface-design"
+        },
+        {
+          "name": "code-review-and-quality",
+          "path": "skills/code-review-and-quality"
+        }
+      ],
+      "revision": "1401c8b8030e023baeebb31781a6653fe8e93026"
     },
     {
       "repository": "https://github.com/wshobson/agents",
-      "skills": ["javascript-testing-patterns"],
-      "auditsAtReview": {
-        "javascript-testing-patterns": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "javascript-testing-patterns",
+          "path": "plugins/javascript-typescript/skills/javascript-testing-patterns"
+        }
+      ],
+      "revision": "46891e7e60da0e52baf1050b7b6391b64e84c6d9"
     },
     {
       "repository": "https://github.com/claude-dev-suite/claude-dev-suite",
-      "skills": ["typescript-quality"],
-      "auditsAtReview": {
-        "typescript-quality": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "typescript-quality",
+          "path": "skills/quality/typescript-quality"
+        }
+      ],
+      "revision": "c9bf961e50d3a4b8ce67160e0470ce3e9d9e7bf0"
     },
     {
       "repository": "https://github.com/currents-dev/playwright-best-practices-skill",
-      "skills": ["playwright-best-practices"],
-      "auditsAtReview": {
-        "playwright-best-practices": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "playwright-best-practices",
+          "path": "playwright-best-practices"
+        }
+      ],
+      "revision": "283d5cbc5d11aac1abda058b16ad22c317d54dc0"
     },
     {
       "repository": "https://github.com/asyrafhussin/agent-skills",
-      "skills": ["state-management"],
-      "auditsAtReview": {
-        "state-management": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "state-management",
+          "path": "skills/state-management"
+        }
+      ],
+      "revision": "1aa0ff717c10309226c9e678f00873976450fd76"
     },
     {
       "repository": "https://github.com/pproenca/dot-skills",
-      "skills": ["react-hook-form"],
-      "auditsAtReview": {
-        "react-hook-form": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "react-hook-form",
+          "path": "skills/.curated/react-hook-form"
+        }
+      ],
+      "revision": "cf93c57cac89d6fc3e4194686000411567f5caf3"
     },
     {
       "repository": "https://github.com/sergiodxa/agent-skills",
-      "skills": ["owasp-security-check"],
-      "auditsAtReview": {
-        "owasp-security-check": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "owasp-security-check",
+          "path": "skills/owasp-security-check"
+        }
+      ],
+      "revision": "40e21b46189d5c7de6610b68a25280af863f8775"
     },
     {
       "repository": "https://github.com/obra/superpowers",
-      "skills": ["systematic-debugging", "verification-before-completion"],
-      "auditsAtReview": {
-        "systematic-debugging": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"],
-        "verification-before-completion": ["Gen Agent Trust Hub: pass", "Socket: pass", "Snyk: pass"]
-      }
+      "skills": [
+        {
+          "name": "systematic-debugging",
+          "path": "skills/systematic-debugging"
+        },
+        {
+          "name": "verification-before-completion",
+          "path": "skills/verification-before-completion"
+        }
+      ],
+      "revision": "8ca22dba9a94f28898bbce59f2537ff4d87c747d"
     }
-  ]
+  ],
+  "auditNote": "Revisões fixadas para reprodução. Auditorias históricas sem vínculo com estes commits foram removidas; não se declara auditoria de segurança completa das fontes."
 }
