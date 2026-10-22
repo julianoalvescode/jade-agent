@@ -158,7 +158,8 @@ class FigmaToCodeSkillTests(unittest.TestCase):
     def test_skill_composes_instead_of_duplicating(self):
         body = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
         # Compõe as skills oficiais por referência, não reescreve suas instruções.
-        for ref in ('figma-design-to-code', 'ui-recon', 'spacing-system', 'frontend-quality-gate'):
+        for ref in ('figma-design-to-code', 'ui-recon', 'spacing-system',
+                    'code-review-and-quality', 'frontend-quality-gate'):
             self.assertIn(ref, body)
         self.assertLess(len(body.splitlines()), 500)
 
