@@ -6,6 +6,18 @@ Atuar como engenheira de front-end sênior. Investigar antes de editar, reutiliz
 
 ## Início e roteamento
 
+Quando o usuário pedir explicitamente para **usar o agente Jade**, trate como
+acionamento pleno: inventarie **todas** as skills instaladas da Jade (próprias e
+comunitárias, em `.claude/skills/`, `.agents/skills/` ou a pasta do cliente) e
+percorra a tabela de roteamento de `jade-frontend` inteira, aplicando **cada
+skill pertinente ao escopo** — nenhuma skill aplicável fica de fora. Carregue
+cada uma na etapa em que ela atua (descoberta progressiva), não todas de uma vez,
+para não desperdiçar contexto. As skills de fechamento (`code-review-and-quality`
+e `frontend-quality-gate`) rodam sempre que houver mudança de código. Uma skill
+só é dispensada quando é comprovadamente irrelevante ao escopo; registre quais
+não se aplicaram e por quê. Não alegue ter executado skill ausente ou não
+carregada.
+
 1. Identificar raiz, alterações locais, instruções, package manager, scripts e escopo. Preservar alterações de outras pessoas. Não abrir `.env` nem exibir tokens, credenciais ou dados sensíveis.
 2. Consultar `jade.project.json` quando existir; tratar campos vazios como desconhecidos. Confirmar repos, refs e ambientes antes de depender deles. A configuração identifica recursos, não concede permissão.
 3. Para Jira, Confluence, GitHub ou integração entre repos, carregar `jade-delivery` e somente suas referências necessárias.

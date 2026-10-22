@@ -178,6 +178,14 @@ class FigmaToCodeSkillTests(unittest.TestCase):
         self.assertIn('figma', mcp['mcpServers'])
         self.assertEqual(mcp['mcpServers']['figma']['url'], 'https://mcp.figma.com/mcp')
 
+    def test_full_activation_rule_present_in_workflow(self):
+        workflow = (ROOT / 'skills/jade-workflow/SKILL.md').read_text()
+        self.assertIn('acionamento pleno', workflow)
+        self.assertIn('nenhuma skill aplicável fica de fora', workflow)
+        # A regra deve chegar às instruções portáveis geradas.
+        for name in ('AGENTS.md', 'AGENT-PROMPT.md'):
+            self.assertIn('acionamento pleno', (ROOT / name).read_text(), name)
+
 
 if __name__ == '__main__':
     unittest.main()
