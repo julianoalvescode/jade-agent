@@ -33,8 +33,10 @@ componentes para entender props, variantes e composição esperadas.
 
 ### Fluxo Figma → código obrigatório
 
-Quando a demanda incluir um frame, node ou URL do Figma, aplique
-`figma-design-to-code` antes de qualquer implementação:
+Quando a demanda incluir um frame, node ou URL do Figma, carregue
+`jade-figma-to-code`, que coordena o fluxo e a economia de contexto em três
+níveis. A mecânica do `get_design_context` segue em `figma-design-to-code`.
+Aplique antes de qualquer implementação:
 
 1. confirme que a URL aponta para um node específico; se faltar `node-id`, peça a
    URL do frame e não adivinhe um identificador;

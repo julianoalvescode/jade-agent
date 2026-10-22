@@ -22,7 +22,18 @@ Se optar pelo exemplo, mesclar somente a entrada necessária na configuração e
 
 Informar o repo/caminho autorizado do back-end em `jade.project.json` ou no pedido. Se estiver fora do diretório permitido pelo cliente, conceder acesso pelo mecanismo do próprio cliente. A Jade não contorna a restrição.
 
-Para Figma, reutilizar o MCP oficial já conectado e fornecer URL com node-id. A ferramenta precisa expor o contexto de design necessário; os parâmetros devem seguir o schema realmente disponível.
+Para Figma, reutilizar o MCP oficial já conectado e fornecer URL com node-id. A
+ferramenta precisa expor o contexto de design necessário; os parâmetros devem
+seguir o schema realmente disponível. Se o servidor ainda não estiver conectado,
+adicioná-lo (a entrada `figma` também consta em `.mcp.example.json`):
+
+```bash
+claude mcp add --transport http figma https://mcp.figma.com/mcp
+```
+
+Abrir `/mcp` e concluir a autenticação OAuth. Enquanto `get_design_context` não
+estiver exposto e autenticado, a `jade-figma-to-code` registra `BLOCKED` na etapa
+visual e não recria a tela de memória.
 
 ## Configuração de projeto
 
