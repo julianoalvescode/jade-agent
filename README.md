@@ -1,86 +1,159 @@
-# Jade — pacote final 2.0.0
+<div align="center">
 
-Agente para Claude Code com fluxo de front-end integrado a Jira, Confluence, GitHub, Figma e repositórios back-end. Inclui quatro skills próprias e instalador para as 20 skills comunitárias, com fontes fixadas por commit.
+# 🪷 Jade
+
+**Uma agente de front-end para Claude Code — um agente, várias skills.**
+
+Implementa e revisa React, Next.js e TypeScript com contexto real de
+Jira, Confluence, GitHub, Figma e contratos de back-end — e entrega
+evidências critério a critério.
+
+<sub>Versão 2.1.0 · Claude Code · Codex · Cursor · Copilot · Windsurf · Gemini CLI · Cline</sub>
+
+</div>
+
+---
+
+## Por que Jade
+
+Jade **não é um gerador de telas**. É uma engenheira de front-end sênior que
+investiga antes de editar, reutiliza o que o projeto já tem, respeita a stack
+existente e nunca declara pronto sem evidência. Um único agente
+(`jade`) carrega apenas o núcleo `jade-workflow` e **descobre as demais skills
+sob demanda**, conforme o impacto da tarefa — sem subagentes, sem contexto
+desperdiçado.
+
+> [!NOTE]
+> **Um agente, várias skills.** A arquitetura é deliberada: só `jade-workflow` é
+> pré-carregada. UI, Figma, entrega, testes e segurança entram como skills
+> separadas apenas quando a tarefa as exige.
+
+## Skills próprias
+
+| Skill | Papel |
+| --- | --- |
+| **`jade-workflow`** | Núcleo operacional: início, roteamento e entrega com evidências. É a única pré-carregada. |
+| **`jade-frontend`** | Engenharia de front-end: reconhecimento de UI, reuso, grade de 8 pontos e implementação. |
+| **`jade-figma-to-code`** | 🆕 Coordena Figma → código com leitura seletiva, reuso de componentes e economia de tokens. |
+| **`jade-delivery`** | Jira, Confluence, GitHub e contratos entre repos, sem duplicar registros. |
+| **`frontend-quality-gate`** | Prontidão por evidências: `PASS`/`FAIL`/`BLOCKED`/`NOT RUN`/`N/A`. |
+
+Mais **20 skills comunitárias** (fixadas por commit em `skills-lock.json`)
+complementam as regras próprias: `ui-recon`, `spacing-system`,
+`figma-design-to-code`, `react-hook-form`, `state-management`,
+`owasp-security-check`, `systematic-debugging`, entre outras.
+
+## 🎨 Figma → código (`jade-figma-to-code`)
+
+Acionada automaticamente quando o pedido traz um frame, node ou URL do Figma
+(«implemente esta tela», «converta este node em React», «ajuste a UI ao
+design»). Coordena o fluxo sem reescrever as skills oficiais:
+
+```
+A. Discovery       → identificar o node exato (exige node-id)
+B. Project Mapping → ui-recon: mapear componente/token existente
+C. Extraction      → figma-design-to-code: get_design_context (1 chamada)
+D. Implementation  → código de produção na stack real + grade 8pt
+E. Validation      → lint/types/testes direcionados + comparação visual
+F. Delivery        → resumo com evidências e pendências reais
+```
+
+### Economia de tokens em três níveis
+
+| Nível | Lê | Para quando |
+| --- | --- | --- |
+| **1 — mínimo** | stack, convenções e candidatos por **busca de símbolo/nome/import** + 1 chamada ao node | basta para mapear |
+| **2 — específico** | só os arquivos da feature e do node (trechos, não arquivos inteiros) | a implementação está coberta |
+| **3 — expandido** | dependências extras (subnodes, contrato de API) **só com necessidade comprovada** | — |
+
+Regras firmes: nunca carregar o arquivo Figma inteiro, uma chamada MCP por node
+(reaproveitando o contexto), nunca reler arquivo sem alteração, saídas curtas.
+**Nunca** sacrificar correção, segurança ou fidelidade visual por tokens.
+
+### Stack agnóstica
+
+Jade **detecta** o framework, TS/JS, biblioteca de UI, design system, estilização
+(Tailwind, CSS Modules, Styled Components, shadcn…), estado, testes e lint — e o
+**padrão existente do projeto vence as preferências do agente**. Se já existe um
+`Button`, `Input` ou `Modal`, reutiliza antes de criar.
 
 ## Instalar no seu projeto
 
-Requisitos: Python 3.10 ou superior e Git. A instalação completa precisa de rede para baixar os commits do manifesto. Node/npm não são necessários para instalar a Jade; projetos consumidores continuam usando seus próprios requisitos.
-
-Extraia este pacote e execute, apontando para a pasta do projeto em que usará a Jade:
+Requisitos: **Python 3.10+** e **Git**. A instalação completa precisa de rede
+para baixar os commits do manifesto; Node/npm não são necessários para instalar
+a Jade.
 
 ```bash
+# instalação completa (núcleo + 20 skills comunitárias)
 bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto
-```
 
-Para atualizar uma instalação existente, após revisar os arquivos que serão substituídos:
+# somente as cinco skills próprias, sem rede
+bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto --core-only
 
-```bash
+# atualizar preservando arquivos divergentes (backup em .jade/backups/)
 bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto --replace
 ```
 
-Arquivos diferentes são preservados por padrão: o instalador informa o conflito antes de escrever. `--replace` cria backups em `.jade/backups/`. O instalador não altera `CLAUDE.md`, `AGENTS.md`, `.mcp.json` ou os arquivos de configuração pessoal existentes. A recuperação automática cobre falhas normais de escrita; um encerramento abrupto do sistema pode exigir restauração a partir do backup.
-
-Para instalar somente as quatro skills próprias sem rede:
-
-```bash
-bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto --core-only
-```
-
-O modo `--core-only` contém o fluxo completo e as regras próprias de engenharia; as 20 skills comunitárias complementares não são instaladas. Não se deve alegar que uma skill ausente foi executada.
+O instalador **não** altera `CLAUDE.md`, `AGENTS.md`, `.mcp.json` ou configuração
+pessoal: conflitos são informados antes de escrever. Também aceita `codex`,
+`cursor`, `github-copilot`, `windsurf`, `gemini-cli`, `cline` e `universal` —
+esses modos instalam em `.agents/skills` (ou equivalente) e gravam `JADE.md`.
 
 ## Configurar e usar
 
-1. Na pasta do projeto, copie `jade.project.example.json` para `jade.project.json` e informe os repos, documentos e ambientes conhecidos. O preenchimento não é obrigatório quando essas informações já estão no pedido ou nas instruções do projeto.
-2. Reutilize os conectores autenticados de Jira/Confluence, GitHub e Figma. Consulte [docs/connectors.md](docs/connectors.md) para a configuração inicial. O exemplo de MCP não contém credenciais e não é ativado automaticamente.
-3. Abra uma nova sessão do Claude no projeto e peça:
+1. Copie `jade.project.example.json` para `jade.project.json` e preencha os repos,
+   documentos e ambientes conhecidos (campos vazios = desconhecido, não contrato).
+2. Reutilize os conectores autenticados — Jira/Confluence, GitHub e **Figma**. Veja
+   [docs/connectors.md](docs/connectors.md). O exemplo de MCP não traz credenciais.
+3. Abra uma sessão do Claude no projeto e peça.
 
-> Use a agente Jade para implementar o ticket PROJ-123. Leia os documentos vinculados, confira o contrato no repositório back-end e valide os critérios de aceite. Prepare o PR com as evidências.
+**Exemplo — ticket completo:**
 
-Para autorizar também a publicação, inclua as ações desejadas no pedido, por exemplo: “Crie o PR e publique no ticket um comentário com o link e os resultados”. Merge, transições de Jira e documentação seguem o escopo autorizado e as políticas reais do time.
+> Use a agente Jade para implementar o ticket PROJ-123. Leia os documentos
+> vinculados, confira o contrato no back-end e valide os critérios. Prepare o PR
+> com as evidências.
 
-## O que foi incorporado
+**Exemplo — Figma → código:**
 
-| Recurso | Implementação |
-| --- | --- |
-| Coordenação da Jade | `skills/jade-workflow/SKILL.md` |
-| Jira, Confluence e GitHub | `skills/jade-delivery/SKILL.md` e referências |
-| Contrato e ambiente back-end | Referência `backend-contracts.md` |
-| UI, Figma, 8pt e engenharia | `skills/jade-frontend/SKILL.md` e referência completa |
-| Evidências e prontidão | `skills/frontend-quality-gate/SKILL.md` |
-| Instalação reproduzível | `scripts/install.py` + `skills-lock.json` |
-| Instruções portáveis | Geradas pelo núcleo, verificadas no CI |
-| Validação do pacote | `scripts/validate.py`, `tests/` e GitHub Actions |
+> Jade, implemente esta tela do Figma:
+> `https://www.figma.com/design/<fileKey>/Tela?node-id=12-345`.
+> Reutilize os componentes do projeto e mantenha a grade de 8 pontos.
 
-Apenas `jade-workflow` é pré-carregada no agente. As demais skills são carregadas conforme a tarefa. UI mantém sua grade de 8 pontos, reutilização de componentes e validação visual. Contratos são verificados no código e distinguidos da disponibilidade no ambiente.
+> [!IMPORTANT]
+> **Figma MCP.** Se `get_design_context` não estiver exposto/autenticado, a Jade
+> registra `BLOCKED` na etapa visual e **não recria a tela de memória**. Conecte o
+> servidor `figma` (`claude mcp add --transport http figma https://mcp.figma.com/mcp`)
+> e conclua o OAuth em `/mcp`. A entrada também consta em `.mcp.example.json`.
 
-Cada entrega relaciona critério, implementação, evidência e estado: `PASS`, `FAIL`, `BLOCKED`, `NOT RUN` ou `N/A`. A Jade distingue código implementado, validação, PR aberto, merge e deploy. Em retomadas, verifica registros existentes antes de escrever para evitar duplicação.
+## Entrega com evidências
 
-## Codex e outros clientes
-
-```bash
-bash /caminho/jade-agent/scripts/install-skills.sh codex --project /caminho/meu-projeto
-```
-
-O modo Codex instala as skills em `.agents/skills` e grava `JADE.md`. Peça ao cliente para ler `JADE.md`; ele não é ativado automaticamente como `AGENTS.md`. As regras existentes do projeto são preservadas. `AGENTS.md` e `AGENT-PROMPT.md` no pacote são versões portáveis geradas, que podem ser incorporadas deliberadamente ao fluxo do time.
-
-O instalador também aceita `cursor`, `github-copilot`, `windsurf`, `gemini-cli`, `cline` e `universal`. Esses modos copiam skills para as pastas correspondentes e criam `JADE.md`; descubra/ative as instruções conforme o cliente. Não foram executados nesses aplicativos nesta entrega.
+Cada tarefa relaciona **critério → implementação → evidência → estado**, usando
+`PASS`, `FAIL`, `BLOCKED`, `NOT RUN` ou `N/A`. A Jade distingue código
+implementado, validação, PR aberto, merge e deploy — e, ao retomar, verifica o
+estado remoto antes de escrever, evitando duplicação.
 
 ## Manutenção e verificação
 
-A fonte canônica das regras comuns é `skills/jade-workflow/SKILL.md`. Após alterá-la:
+A fonte canônica das regras comuns é `skills/jade-workflow/SKILL.md`. Após
+alterá-la:
 
 ```bash
-python3 scripts/sync-instructions.py
-python3 scripts/validate.py
-python3 -m unittest discover -s tests -v
+python3 scripts/sync-instructions.py            # regenera AGENTS.md, AGENT-PROMPT.md e jade.md
+python3 scripts/validate.py                      # manifesto, skills, referências, preload e paridade
+python3 -m unittest discover -s tests -v         # 20 testes do instalador e da skill Figma
 ```
 
-Os comandos não precisam de rede. O CI executa essas verificações e oferece um smoke test completo opcional em `workflow_dispatch`.
+Nenhum comando precisa de rede. O CI executa essas verificações
+([.github/workflows/validate-agent.yml](.github/workflows/validate-agent.yml)) e
+oferece um smoke test completo em `workflow_dispatch`. O instalador consome apenas
+o manifesto, busca o SHA exato, confere o nome da skill e **não executa scripts de
+terceiros** durante a instalação. Ver [docs/validation.md](docs/validation.md) e
+[docs/evaluation-scenarios.md](docs/evaluation-scenarios.md).
 
-O instalador consome somente o manifesto, busca o SHA exato e confere o nome da skill. Não executa scripts das skills durante a instalação e não usa `skills@latest`. Ao atualizar dependências, revisar a nova fonte, alterar seu SHA/caminho no manifesto e repetir a instalação completa em projeto temporário. Fixar o commit garante rastreabilidade, não substitui revisão de segurança.
+## Proveniência
 
-[docs/validation.md](docs/validation.md) registra os testes realizados. A instalação foi exercitada; o uso em uma sessão Claude com as suas contas precisa da autenticação local. [docs/evaluation-scenarios.md](docs/evaluation-scenarios.md) contém cenários para essa verificação.
-
-## Conteúdo e proveniência
-
-As skills próprias e as regras de engenharia evoluem a configuração original de `julianoalvescode/jade-agent`, base `5f9af5a777be07db7f316ca60512d8f38ff33b6d`. As skills de terceiros são baixadas dos repositórios e commits identificados no manifesto, mantendo seus arquivos; o pacote não as redistribui como conteúdo próprio.
+As skills próprias e as regras de engenharia evoluem a configuração original de
+`julianoalvescode/jade-agent` (base `5f9af5a777be07db7f316ca60512d8f38ff33b6d`).
+As skills de terceiros são baixadas dos repositórios e commits do manifesto,
+mantendo seus arquivos; o pacote não as redistribui como conteúdo próprio. Fixar
+o commit garante rastreabilidade, não substitui revisão de segurança.

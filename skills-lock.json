@@ -1,12 +1,13 @@
 {
   "schemaVersion": 2,
-  "bundleVersion": "2.0.0",
+  "bundleVersion": "2.1.0",
   "resolvedAt": "2026-10-07",
   "installer": "python-standard-library+git",
   "localSkills": [
     "jade-workflow",
     "jade-delivery",
     "jade-frontend",
+    "jade-figma-to-code",
     "frontend-quality-gate"
   ],
   "sources": [

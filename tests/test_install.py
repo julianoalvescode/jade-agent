@@ -26,7 +26,7 @@ class InstallerTests(unittest.TestCase):
     def test_core_install_preserves_project_instructions(self):
         (self.project / 'AGENTS.md').write_text('existing rules')
         result = jade.install(self.project, core_only=True)
-        self.assertEqual(result['skills'], 4)
+        self.assertEqual(result['skills'], 5)
         self.assertEqual((self.project / 'AGENTS.md').read_text(), 'existing rules')
         self.assertFalse((self.project / '.mcp.json').exists())
         self.assertTrue((self.project / '.claude/skills/jade-delivery/SKILL.md').is_file())
@@ -109,6 +109,74 @@ class InstallerTests(unittest.TestCase):
         result = subprocess.run([sys.executable, str(ROOT / 'scripts/install.py'), 'invalid-agent'],
                                 capture_output=True)
         self.assertEqual(result.returncode, 2)
+
+
+class FigmaToCodeSkillTests(unittest.TestCase):
+    """Garantias da skill jade-figma-to-code: descoberta, roteamento, MCP e ausência de regressão."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.project = Path(self.temp.name) / 'projeto figma'
+        self.project.mkdir()
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def test_skill_is_registered_as_local_core_skill(self):
+        manifest = jade.load_manifest()
+        self.assertIn('jade-figma-to-code', manifest['localSkills'])
+        # Permanece uma skill local (sem rede); não vira fonte comunitária.
+        community = {s['name'] for src in manifest['sources'] for s in src['skills']}
+        self.assertNotIn('jade-figma-to-code', community)
+
+    def test_skill_frontmatter_name_matches_directory(self):
+        path = ROOT / 'skills' / 'jade-figma-to-code' / 'SKILL.md'
+        self.assertTrue(path.is_file())
+        self.assertEqual(jade.skill_name(path), 'jade-figma-to-code')
+
+    def test_core_install_discovers_skill_without_network(self):
+        result = jade.install(self.project, core_only=True)
+        # 4 skills originais + a nova coordenadora = 5 skills próprias.
+        self.assertEqual(result['skills'], 5)
+        installed = self.project / '.claude/skills/jade-figma-to-code/SKILL.md'
+        self.assertTrue(installed.is_file())
+
+    def test_no_regression_original_four_skills_still_install(self):
+        jade.install(self.project, core_only=True)
+        for name in ('jade-workflow', 'jade-delivery', 'jade-frontend', 'frontend-quality-gate'):
+            self.assertTrue((self.project / '.claude/skills' / name / 'SKILL.md').is_file(), name)
+
+    def test_routing_triggers_on_figma_request(self):
+        workflow = (ROOT / 'skills/jade-workflow/SKILL.md').read_text()
+        self.assertIn('jade-figma-to-code', workflow)
+        self.assertIn('Figma', workflow)
+        frontend = (ROOT / 'skills/jade-frontend/SKILL.md').read_text()
+        self.assertRegex(frontend, r'\|\s*Figma\s*\|.*jade-figma-to-code')
+        engineering = (ROOT / 'skills/jade-frontend/references/engineering.md').read_text()
+        self.assertIn('jade-figma-to-code', engineering)
+
+    def test_skill_composes_instead_of_duplicating(self):
+        body = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
+        # Compõe as skills oficiais por referência, não reescreve suas instruções.
+        for ref in ('figma-design-to-code', 'ui-recon', 'spacing-system', 'frontend-quality-gate'):
+            self.assertIn(ref, body)
+        self.assertLess(len(body.splitlines()), 500)
+
+    def test_token_strategy_documented(self):
+        body = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
+        for marker in ('Nível 1', 'Nível 2', 'Nível 3'):
+            self.assertIn(marker, body)
+
+    def test_mcp_unavailable_path_documented(self):
+        body = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
+        self.assertIn('get_design_context', body)
+        self.assertIn('BLOCKED', body)
+
+    def test_figma_mcp_server_present_in_example(self):
+        mcp = json.loads((ROOT / '.mcp.example.json').read_text())
+        self.assertIn('figma', mcp['mcpServers'])
+        self.assertEqual(mcp['mcpServers']['figma']['url'], 'https://mcp.figma.com/mcp')
+
 
 if __name__ == '__main__':
     unittest.main()
