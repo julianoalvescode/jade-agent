@@ -158,7 +158,8 @@ class FigmaToCodeSkillTests(unittest.TestCase):
     def test_skill_composes_instead_of_duplicating(self):
         body = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
         # Compõe as skills oficiais por referência, não reescreve suas instruções.
-        for ref in ('figma-design-to-code', 'ui-recon', 'spacing-system', 'frontend-quality-gate'):
+        for ref in ('figma-design-to-code', 'ui-recon', 'spacing-system',
+                    'code-review-and-quality', 'frontend-quality-gate'):
             self.assertIn(ref, body)
         self.assertLess(len(body.splitlines()), 500)
 
@@ -176,6 +177,14 @@ class FigmaToCodeSkillTests(unittest.TestCase):
         mcp = json.loads((ROOT / '.mcp.example.json').read_text())
         self.assertIn('figma', mcp['mcpServers'])
         self.assertEqual(mcp['mcpServers']['figma']['url'], 'https://mcp.figma.com/mcp')
+
+    def test_full_activation_rule_present_in_workflow(self):
+        workflow = (ROOT / 'skills/jade-workflow/SKILL.md').read_text()
+        self.assertIn('acionamento pleno', workflow)
+        self.assertIn('nenhuma skill aplicável fica de fora', workflow)
+        # A regra deve chegar às instruções portáveis geradas.
+        for name in ('AGENTS.md', 'AGENT-PROMPT.md'):
+            self.assertIn('acionamento pleno', (ROOT / name).read_text(), name)
 
 
 if __name__ == '__main__':

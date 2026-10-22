@@ -7,9 +7,10 @@ description: Coordenar a implementação de uma tela ou componente do Figma em c
 
 Skill de **coordenação**. Não reescreve as skills oficiais: compõe
 `figma-design-to-code` (mecânica do `get_design_context`), `ui-recon`
-(inventário da UI), `spacing-system` (grade de 8 pontos) e
-`frontend-quality-gate` (evidências). Carregue cada uma apenas na etapa que a
-usa. As regras de engenharia completas estão em
+(inventário da UI), `spacing-system` (grade de 8 pontos),
+`code-review-and-quality` (revisão do código gerado) e `frontend-quality-gate`
+(evidências). Carregue cada uma apenas na etapa que a usa. As regras de
+engenharia completas estão em
 [engineering.md](../jade-frontend/references/engineering.md); aqui fica o fluxo
 enxuto e a estratégia de contexto.
 
@@ -87,9 +88,11 @@ TS, separação de responsabilidades, reutilização e legibilidade. Aplicar
 estados (hover, erro, loading, breakpoint) ausentes do design ou do produto.
 
 **E. Validation.** Rodar as verificações do projeto **direcionadas** ao escopo
-(lint, type-check, testes relevantes) — não a suíte inteira sem motivo. Quando
-houver ferramenta visual, comparar a UI renderizada com o design e registrar
-desvios objetivos. Reportar `arquivo:linha`.
+(lint, type-check, testes relevantes) — não a suíte inteira sem motivo. Revisar
+o código gerado com `code-review-and-quality` (legibilidade, duplicação,
+tratamento de erro, limites), restrito ao diff da feature. Quando houver
+ferramenta visual, comparar a UI renderizada com o design e registrar desvios
+objetivos. Reportar `arquivo:linha`.
 
 **F. Delivery.** Apenas um resumo: arquivos criados/modificados, verificações
 executadas com estado (`PASS`/`FAIL`/`BLOCKED`/`NOT RUN`/`N/A`) e pendências
