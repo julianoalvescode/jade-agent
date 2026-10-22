@@ -26,7 +26,7 @@ class InstallerTests(unittest.TestCase):
     def test_core_install_preserves_project_instructions(self):
         (self.project / 'AGENTS.md').write_text('existing rules')
         result = jade.install(self.project, core_only=True)
-        self.assertEqual(result['skills'], 5)
+        self.assertEqual(result['skills'], 6)
         self.assertEqual((self.project / 'AGENTS.md').read_text(), 'existing rules')
         self.assertFalse((self.project / '.mcp.json').exists())
         self.assertTrue((self.project / '.claude/skills/jade-delivery/SKILL.md').is_file())
@@ -137,7 +137,7 @@ class FigmaToCodeSkillTests(unittest.TestCase):
     def test_core_install_discovers_skill_without_network(self):
         result = jade.install(self.project, core_only=True)
         # 4 skills originais + a nova coordenadora = 5 skills próprias.
-        self.assertEqual(result['skills'], 5)
+        self.assertEqual(result['skills'], 6)
         installed = self.project / '.claude/skills/jade-figma-to-code/SKILL.md'
         self.assertTrue(installed.is_file())
 
@@ -185,6 +185,83 @@ class FigmaToCodeSkillTests(unittest.TestCase):
         # A regra deve chegar às instruções portáveis geradas.
         for name in ('AGENTS.md', 'AGENT-PROMPT.md'):
             self.assertIn('acionamento pleno', (ROOT / name).read_text(), name)
+
+
+class BackendContractSkillTests(unittest.TestCase):
+    """Garantias da skill jade-backend-contract: ativação opcional, descoberta,
+    composição, economia e ausência de regressão."""
+
+    SKILL = ROOT / 'skills/jade-backend-contract/SKILL.md'
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.project = Path(self.temp.name) / 'projeto contrato'
+        self.project.mkdir()
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def test_registered_as_local_core_skill(self):
+        manifest = jade.load_manifest()
+        self.assertIn('jade-backend-contract', manifest['localSkills'])
+
+    def test_frontmatter_name_matches_directory(self):
+        self.assertTrue(self.SKILL.is_file())
+        self.assertEqual(jade.skill_name(self.SKILL), 'jade-backend-contract')
+
+    def test_contract_first_pinned_in_manifest(self):
+        manifest = jade.load_manifest()
+        srcs = {s['repository']: s for s in manifest['sources']}
+        self.assertIn('https://github.com/affaan-m/ecc', srcs)
+        src = srcs['https://github.com/affaan-m/ecc']
+        names = {sk['name'] for sk in src['skills']}
+        self.assertIn('contract-first', names)
+        self.assertRegex(src['revision'], r'^[0-9a-f]{40}$')  # SHA imutável
+
+    def test_core_install_discovers_skill_without_network(self):
+        result = jade.install(self.project, core_only=True)
+        # 5 próprias anteriores + jade-backend-contract = 6.
+        self.assertEqual(result['skills'], 6)
+        self.assertTrue((self.project / '.claude/skills/jade-backend-contract/SKILL.md').is_file())
+
+    def test_no_regression_other_skills_still_install(self):
+        jade.install(self.project, core_only=True)
+        for name in ('jade-workflow', 'jade-delivery', 'jade-frontend',
+                     'jade-figma-to-code', 'frontend-quality-gate'):
+            self.assertTrue((self.project / '.claude/skills' / name / 'SKILL.md').is_file(), name)
+
+    def test_lazy_activation_rules_documented(self):
+        body = self.SKILL.read_text()
+        self.assertIn('lazy', body.lower())
+        # Ativa em API; não ativa em tarefa puramente visual.
+        self.assertRegex(body, r'[Nn]ão ativ')
+        self.assertIn('visuais', body)
+        for trigger in ('endpoint', 'DTO', 'Figma', 'Jira'):
+            self.assertIn(trigger, body)
+
+    def test_composes_contract_first_and_backend_contracts(self):
+        body = self.SKILL.read_text()
+        self.assertIn('contract-first', body)
+        self.assertIn('backend-contracts.md', body)
+        self.assertLess(len(body.splitlines()), 500)
+
+    def test_backend_unavailable_path_documented(self):
+        body = self.SKILL.read_text()
+        self.assertIn('BLOCKED', body)
+        self.assertIn('não invente contratos', body)
+
+    def test_discovery_supports_common_stacks(self):
+        body = self.SKILL.read_text()
+        for stack in ('Spring', 'NestJS', 'OpenAPI', 'GraphQL'):
+            self.assertIn(stack, body)
+
+    def test_routing_wired_in_frontend_and_workflow(self):
+        frontend = (ROOT / 'skills/jade-frontend/SKILL.md').read_text()
+        self.assertRegex(frontend, r'\|\s*API\s*\|.*jade-backend-contract')
+        workflow = (ROOT / 'skills/jade-workflow/SKILL.md').read_text()
+        self.assertIn('jade-backend-contract', workflow)
+        figma = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
+        self.assertIn('jade-backend-contract', figma)
 
 
 if __name__ == '__main__':

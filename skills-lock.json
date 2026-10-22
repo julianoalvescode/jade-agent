@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "bundleVersion": "2.1.0",
+  "bundleVersion": "2.2.0",
   "resolvedAt": "2026-10-07",
   "installer": "python-standard-library+git",
   "localSkills": [
@@ -8,6 +8,7 @@
     "jade-delivery",
     "jade-frontend",
     "jade-figma-to-code",
+    "jade-backend-contract",
     "frontend-quality-gate"
   ],
   "sources": [
@@ -174,6 +175,16 @@
         }
       ],
       "revision": "8ca22dba9a94f28898bbce59f2537ff4d87c747d"
+    },
+    {
+      "repository": "https://github.com/affaan-m/ecc",
+      "skills": [
+        {
+          "name": "contract-first",
+          "path": "skills/contract-first"
+        }
+      ],
+      "revision": "90606c8315ee09cafc303515c5f33024db6b9882"
     }
   ],
   "auditNote": "Revisões fixadas para reprodução. Auditorias históricas sem vínculo com estes commits foram removidas; não se declara auditoria de segurança completa das fontes."

@@ -85,7 +85,9 @@ preservando: fidelidade visual, responsividade comprovada, acessibilidade
 (teclado, foco, semântica, contraste), tipagem TypeScript quando o projeto usa
 TS, separação de responsabilidades, reutilização e legibilidade. Aplicar
 `spacing-system` (grade de 8 pontos) em toda UI nova/alterada. Não inventar
-estados (hover, erro, loading, breakpoint) ausentes do design ou do produto.
+estados (hover, erro, loading, breakpoint) ausentes do design ou do produto. Se a
+tela consumir API, carregar `jade-backend-contract` (opcional) antes de finalizar
+a integração para validar o contrato; se não houver API, não carregar.
 
 **E. Validation.** Rodar as verificações do projeto **direcionadas** ao escopo
 (lint, type-check, testes relevantes) — não a suíte inteira sem motivo. Revisar

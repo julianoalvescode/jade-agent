@@ -34,13 +34,14 @@ desperdiçado.
 | --- | --- |
 | **`jade-workflow`** | Núcleo operacional: início, roteamento e entrega com evidências. É a única pré-carregada. |
 | **`jade-frontend`** | Engenharia de front-end: reconhecimento de UI, reuso, grade de 8 pontos e implementação. |
-| **`jade-figma-to-code`** | 🆕 Coordena Figma → código com leitura seletiva, reuso de componentes e economia de tokens. |
+| **`jade-figma-to-code`** | Coordena Figma → código com leitura seletiva, reuso de componentes e economia de tokens. |
+| **`jade-backend-contract`** | 🆕 Opcional/lazy: valida o contrato front↔back (endpoint, request, response, tipos) via `contract-first`. |
 | **`jade-delivery`** | Jira, Confluence, GitHub e contratos entre repos, sem duplicar registros. |
 | **`frontend-quality-gate`** | Prontidão por evidências: `PASS`/`FAIL`/`BLOCKED`/`NOT RUN`/`N/A`. |
 
-Mais **20 skills comunitárias** (fixadas por commit em `skills-lock.json`)
+Mais **21 skills comunitárias** (fixadas por commit em `skills-lock.json`)
 complementam as regras próprias: `ui-recon`, `spacing-system`,
-`figma-design-to-code`, `react-hook-form`, `state-management`,
+`contract-first`, `figma-design-to-code`, `react-hook-form`, `state-management`,
 `owasp-security-check`, `systematic-debugging`, entre outras.
 
 ## 🎨 Figma → código (`jade-figma-to-code`)
@@ -77,6 +78,29 @@ Jade **detecta** o framework, TS/JS, biblioteca de UI, design system, estilizaç
 **padrão existente do projeto vence as preferências do agente**. Se já existe um
 `Button`, `Input` ou `Modal`, reutiliza antes de criar.
 
+## 🔌 Contrato front ↔ back (`jade-backend-contract`)
+
+Skill **opcional** com **lazy loading**: só é carregada quando a tarefa toca uma
+fronteira de API — tela do Figma que consome API, ticket Jira com endpoints,
+mudança em services/requests/responses/DTOs, auth/authz, ou pedido explícito de
+checagem de contrato. **Não** é carregada em tarefas puramente visuais (CSS,
+layout, responsividade, componentes estáticos).
+
+Coordena a skill da comunidade [`contract-first`](https://skills.sh/affaan-m/ecc/contract-first)
+(fonte de verdade e verificação) com a descoberta entre repos da Jade:
+
+1. detecta o repo back-end (via `jade.project.json`, instruções, links de
+   Jira/Confluence e a integração GitHub da Jade);
+2. localiza **só** os endpoints da tarefa (busca por rota/símbolo);
+3. elege a fonte de verdade (OpenAPI, GraphQL Schema, JSON Schema; senão a
+   implementação real, com nível de confiança);
+4. compara endpoint, request, response e tipos TS do front com o contrato e
+   **reporta incompatibilidades** — sem alterar o back-end nem inventar contratos.
+
+Stacks: Java/Spring Boot, Node (Express, NestJS, Fastify), REST + OpenAPI/Swagger,
+GraphQL. Back-end inacessível → `BLOCKED` com as verificações possíveis, sem
+simular aprovação. Integra-se ao `jade-figma-to-code` apenas quando a tela usa API.
+
 ## Instalar no seu projeto
 
 Requisitos: **Python 3.10+** e **Git**. A instalação completa precisa de rede
@@ -84,10 +108,10 @@ para baixar os commits do manifesto; Node/npm não são necessários para instal
 a Jade.
 
 ```bash
-# instalação completa (núcleo + 20 skills comunitárias)
+# instalação completa (núcleo + 21 skills comunitárias)
 bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto
 
-# somente as cinco skills próprias, sem rede
+# somente as seis skills próprias, sem rede
 bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto --core-only
 
 # atualizar preservando arquivos divergentes (backup em .jade/backups/)

@@ -20,7 +20,7 @@ carregada.
 
 1. Identificar raiz, alterações locais, instruções, package manager, scripts e escopo. Preservar alterações de outras pessoas. Não abrir `.env` nem exibir tokens, credenciais ou dados sensíveis.
 2. Consultar `jade.project.json` quando existir; tratar campos vazios como desconhecidos. Confirmar repos, refs e ambientes antes de depender deles. A configuração identifica recursos, não concede permissão.
-3. Para Jira, Confluence, GitHub ou integração entre repos, carregar `jade-delivery` e somente suas referências necessárias.
+3. Para Jira, Confluence, GitHub ou integração entre repos, carregar `jade-delivery` e somente suas referências necessárias. Quando a tarefa tocar uma fronteira de API (endpoint, service, request/response, DTO, auth) ou consumir dados do back-end, carregar `jade-backend-contract` (opcional, lazy) para validar o contrato; não carregar em tarefa puramente visual.
 4. Para implementar ou revisar código, carregar `jade-frontend`. Em UI, manter reconhecimento e grade de 8 pontos obrigatória. Quando o pedido incluir frame, node ou URL do Figma, carregar `jade-figma-to-code` para coordenar leitura seletiva, reuso e fidelidade. Em correção sem impacto visual, não executar a rotina de UI.
 5. Para avaliar conclusão ou preparar PR, carregar `frontend-quality-gate`. Não confundir escrita de código, integração validada, merge e deploy.
 

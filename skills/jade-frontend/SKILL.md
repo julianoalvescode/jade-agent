@@ -15,7 +15,7 @@ Ler [engineering.md](references/engineering.md) por seção conforme o impacto. 
 | UI | Reconhecer UI, reuse-first, contrato visual e grade de 8 pontos | ui-recon, spacing-system, frontend-design, web-design-guidelines |
 | Figma | Fluxo Figma → código, assets e comparação renderizada | jade-figma-to-code (coordena figma-design-to-code) |
 | React/Next | Implementação, SSR/RSC e performance | vercel-react-best-practices, vercel-composition-patterns |
-| API | Analisar back-end e limites de dados | api-and-interface-design |
+| API | Analisar back-end e limites de dados | jade-backend-contract (coordena contract-first), api-and-interface-design |
 | Testes | Testar comportamento e validar projeto | javascript-testing-patterns, webapp-testing |
 | Segurança | Revisão proporcional ao risco; completa em auth, dados ou fronteiras críticas | owasp-security-check |
 | Bug | Diagnóstico e regressão | systematic-debugging |

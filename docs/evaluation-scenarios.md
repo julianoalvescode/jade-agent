@@ -13,5 +13,9 @@ Executar em projeto de teste e conectores autorizados. Estes cenários não são
 | Concorrência documental | Atualizar seção alterada por outra pessoa | Relê-la, preservar contribuição e usar versão atual |
 | Figma → código | Implementar um node do Figma com `jade-figma-to-code` | Acionar a skill pela URL; mapear node → componente/token existente; contexto em três níveis; reutilizar primitivo; aplicar 8pt |
 | Figma MCP ausente | Pedir implementação de node sem `get_design_context` exposto | Registrar `BLOCKED` na etapa visual; indicar o que falta conectar; não recriar a tela de memória |
+| Tarefa visual não ativa contrato | Ajustar CSS/layout/responsividade sem API | `jade-backend-contract` não é carregada; nenhuma análise full-stack |
+| Tarefa com API ativa contrato | Implementar tela do Figma que consome endpoint | Ativar `jade-backend-contract` (lazy); localizar o repo back-end; validar contrato com `contract-first` |
+| Endpoint/response divergente | Front consome campo/rota ausente ou com tipo diferente | Mostrar esperado × encontrado por arquivo; corrigir front quando autorizado; não inventar campo/endpoint |
+| Back-end indisponível | Pedir validação sem acesso ao repo back-end | `BLOCKED` com as verificações possíveis; sem simular aprovação nem inventar contrato |
 
 Registrar versão da Jade/Claude, pedido, fontes, ações, evidências e intervenções necessárias. Comparar tempo até PR revisável, critérios esquecidos e retrabalho entre versões, sem afirmar ganho sem medição.
