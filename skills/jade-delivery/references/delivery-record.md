@@ -1,30 +1,30 @@
-# Registro compacto de entrega
+# Compact delivery record
 
-Preencher somente com evidência real; omitir campos irrelevantes. Este modelo organiza a resposta ou um checkpoint solicitado, sem obrigar a criar arquivos no produto.
+Fill in only with real evidence; omit irrelevant fields. This template organizes the answer or a requested checkpoint, without requiring files to be created in the product.
 
-## Contexto
+## Context
 
-- Ticket e objetivo:
-- Escopo autorizado:
-- Documentos e versões:
-- Repositório front-end/base/head:
-- Repositório back-end/commit:
-- Ambiente e versão implantada confirmada ou desconhecida:
-- Decisões, divergências e dependências:
+- Ticket and goal:
+- Authorized scope:
+- Documents and versions:
+- Front-end repository/base/head:
+- Back-end repository/commit:
+- Environment and deployed version, confirmed or unknown:
+- Decisions, divergences and dependencies:
 
-## Critérios
+## Criteria
 
-| Critério | Implementação/arquivo | Evidência | Estado |
+| Criterion | Implementation/file | Evidence | State |
 | --- | --- | --- | --- |
-| Requisito verificado | Localização real | Inspeção, teste ou observação | PASS / FAIL / BLOCKED / NOT RUN / N/A |
+| Verified requirement | Real location | Inspection, test or observation | PASS / FAIL / BLOCKED / NOT RUN / N/A |
 
-## Verificação
+## Verification
 
-Registrar comando ou inspeção, resultado, instante/commit e limitações. Capturas e resultados de UI somente quando obtidos. Diferenciar falha anterior da introduzida.
+Record the command or inspection, result, time/commit and limitations. UI screenshots and results only when actually obtained. Distinguish pre-existing failures from introduced ones.
 
-## Situação e ações
+## Status and actions
 
-- Implementação / validação / PR / merge / publicação: confirmar cada estado separadamente.
-- Ações externas realizadas e links:
-- Conteúdo preparado mas não publicado:
-- Bloqueios e próximas ações:
+- Implementation / validation / PR / merge / publication: confirm each state separately.
+- External actions taken and links:
+- Content prepared but not published:
+- Blockers and next actions:

@@ -1,48 +1,61 @@
-# Conectar as ferramentas
+# Connecting the tools
 
-A Jade usa ferramentas já autenticadas no cliente. O pacote não inclui credenciais e não conecta contas automaticamente. Reutilizar os conectores existentes evita configurações duplicadas.
+Jade uses tools already authenticated in the client. The package includes no credentials and does not connect accounts automatically. Reusing existing connectors avoids duplicate configuration.
 
-## Jira e Confluence no Claude Code
+## Jira and Confluence in Claude Code
 
-Se Atlassian ainda não estiver configurado, adicionar o servidor oficial:
+If Atlassian is not configured yet, add the official server:
 
 ```bash
 claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp
 ```
 
-Abrir `/mcp` no Claude Code e concluir a autenticação. A disponibilidade de operações depende da conta, do site e das políticas da organização. A Jade deve verificar as ferramentas expostas e ler o ticket/página antes de alegar acesso.
+Open `/mcp` in Claude Code and complete authentication. The available operations depend on the account, the site and the organization's policies. Jade must check the exposed tools and read the ticket/page before claiming access.
 
 ## GitHub
 
-Usar o conector/MCP já autenticado ou GitHub CLI (`gh`) autenticado. A alternativa em `.mcp.example.json` usa o servidor remoto oficial e a variável `JADE_GITHUB_PAT`; disponibilizar o segredo pelo mecanismo seguro do ambiente, nunca dentro do arquivo versionado ou de um prompt.
+Use the already authenticated connector/MCP or an authenticated GitHub CLI (`gh`). The alternative in `.mcp.example.json` uses the official remote server and the `JADE_GITHUB_PAT` variable; provide the secret through the environment's secure mechanism, never inside the versioned file or a prompt.
 
-Se optar pelo exemplo, mesclar somente a entrada necessária na configuração existente e verificar a conexão em `/mcp`. O instalador grava `.mcp.jade.example.json` e não substitui `.mcp.json`.
+If you choose the example, merge only the needed entry into the existing configuration and check the connection in `/mcp`. The installer writes `.mcp.jade.example.json` and does not replace `.mcp.json`.
 
-## Repositório back-end e Figma
+## Back-end repository and Figma
 
-Informar o repo/caminho autorizado do back-end em `jade.project.json` ou no pedido. Se estiver fora do diretório permitido pelo cliente, conceder acesso pelo mecanismo do próprio cliente. A Jade não contorna a restrição.
+Give the authorized back-end repo/path in `jade.project.json` or in the request. If it is outside the directory allowed by the client, grant access through the client's own mechanism. Jade does not bypass the restriction.
 
-Para Figma, reutilizar o MCP oficial já conectado e fornecer URL com node-id. A
-ferramenta precisa expor o contexto de design necessário; os parâmetros devem
-seguir o schema realmente disponível. Se o servidor ainda não estiver conectado,
-adicioná-lo (a entrada `figma` também consta em `.mcp.example.json`):
+For Figma, reuse the already connected official MCP and provide a URL with a node-id. The
+tool must expose the needed design context; parameters must
+follow the schema actually available. If the server is not connected yet,
+add it (the `figma` entry is also in `.mcp.example.json`):
 
 ```bash
 claude mcp add --transport http figma https://mcp.figma.com/mcp
 ```
 
-Abrir `/mcp` e concluir a autenticação OAuth. Enquanto `get_design_context` não
-estiver exposto e autenticado, a `jade-figma-to-code` registra `BLOCKED` na etapa
-visual e não recria a tela de memória.
+Open `/mcp` and complete OAuth authentication. While `get_design_context` is not
+exposed and authenticated, `jade-figma-to-code` records `BLOCKED` on the
+visual step and does not recreate the screen from memory.
 
-## Configuração de projeto
+## OpenSpec
 
-Copiar `jade.project.example.json` para `jade.project.json` e preencher apenas os campos conhecidos. Campos vazios significam desconhecido; não são contratos ou endpoints fictícios. Não preencher tokens, cookies, senhas ou payloads de cliente.
+Jade always runs with OpenSpec. Install the CLI and initialize the project:
 
-As URLs identificam recursos; não autorizam escrita nem tornam disponível uma API ainda não implantada. Em cada tarefa, verificar commit consultado e evidência de ambiente.
+```bash
+npm install -g @fission-ai/openspec@latest
+openspec init
+```
 
-## Fontes oficiais consultadas
+`openspec init` generates the slash commands for your tool (`/opsx:propose`, `/opsx:apply`, etc.). Without the CLI, Jade writes the artifacts by hand and marks `openspec validate` as `NOT RUN`.
+
+## Project configuration
+
+Copy `jade.project.example.json` to `jade.project.json` and fill in only the known fields. Empty fields mean unknown; they are not fake contracts or endpoints. Do not fill in tokens, cookies, passwords or customer payloads.
+
+URLs identify resources; they do not authorize writes or make an undeployed API available. In each task, check the consulted commit and the environment evidence.
+
+## Official sources consulted
 
 - https://code.claude.com/docs/en/mcp
 - https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents
 - https://support.atlassian.com/atlassian-ai-gateway/docs/get-started-with-the-atlassian-remote-mcp-server/
+- https://github.com/Fission-AI/OpenSpec/blob/main/docs/installation.md
+- https://github.com/Fission-AI/OpenSpec/blob/main/docs/commands.md

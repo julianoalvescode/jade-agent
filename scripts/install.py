@@ -24,34 +24,34 @@ SHA = re.compile(r'[0-9a-f]{40}\Z')
 def safe_relative(value):
     p = PurePosixPath(value)
     if p.is_absolute() or '..' in p.parts or '\\' in value or not value:
-        raise ValueError('Caminho relativo inválido: ' + value)
+        raise ValueError('Invalid relative path: ' + value)
     return p
 
 def skill_name(path):
     text = path.read_text(encoding='utf-8')
     if not text.startswith('---\n') or len(text.split('---', 2)) != 3:
-        raise ValueError('Frontmatter inválido: ' + str(path))
+        raise ValueError('Invalid frontmatter: ' + str(path))
     header = text.split('---', 2)[1]
     match = re.search(r'^name:\s*[\"\']?([a-z0-9-]+)[\"\']?\s*$', header, re.M)
     if not match or not re.search(r'^description:\s*\S', header, re.M):
-        raise ValueError('Nome/descrição ausente: ' + str(path))
+        raise ValueError('Missing name/description: ' + str(path))
     return match[1]
 
 def load_manifest(root=ROOT):
     manifest = json.loads((root / 'skills-lock.json').read_text())
     if manifest.get('schemaVersion') != 2 or not manifest.get('localSkills'):
-        raise ValueError('Manifesto incompatível.')
+        raise ValueError('Incompatible manifest.')
     names = list(manifest['localSkills'])
     for source in manifest['sources']:
         if not re.fullmatch(r'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', source['repository']):
-            raise ValueError('Fonte GitHub HTTPS inválida.')
+            raise ValueError('Invalid GitHub HTTPS source.')
         if not SHA.fullmatch(source['revision']):
-            raise ValueError('Toda fonte precisa de SHA imutável de 40 caracteres.')
+            raise ValueError('Every source needs an immutable 40-character SHA.')
         for item in source['skills']:
             safe_relative(item['path'])
             names.append(item['name'])
     if any(not NAME.fullmatch(n) for n in names) or len(names) != len(set(names)):
-        raise ValueError('Nomes inválidos ou duplicados no manifesto.')
+        raise ValueError('Invalid or duplicate names in the manifest.')
     return manifest
 
 def run_git(*args):
@@ -67,16 +67,16 @@ def checkout(source, target):
     run_git('-C', target, 'fetch', '--quiet', '--depth', '1', 'origin', source['revision'])
     run_git('-C', target, 'checkout', '--quiet', '--detach', 'FETCH_HEAD')
     if run_git('-C', target, 'rev-parse', 'HEAD') != source['revision']:
-        raise ValueError('Revisão obtida não corresponde ao manifesto.')
+        raise ValueError('Fetched revision does not match the manifest.')
 
 def fingerprint(path):
     if path.is_symlink():
-        raise ValueError('Link simbólico não permitido: ' + str(path))
+        raise ValueError('Symbolic link not allowed: ' + str(path))
     digest = hashlib.sha256()
     entries = [path] if path.is_file() else sorted(path.rglob('*'))
     for item in entries:
         if item.is_symlink():
-            raise ValueError('Link simbólico não permitido: ' + str(item))
+            raise ValueError('Symbolic link not allowed: ' + str(item))
         if item.is_file():
             relative = 'file' if path.is_file() else item.relative_to(path).as_posix()
             digest.update(relative.encode() + b'\0' + item.read_bytes() + b'\0')
@@ -85,7 +85,7 @@ def fingerprint(path):
 
 def copy_skill(source, target, expected):
     if source.is_symlink() or skill_name(source / 'SKILL.md') != expected:
-        raise ValueError('Identidade inesperada para skill: ' + expected)
+        raise ValueError('Unexpected identity for skill: ' + expected)
     fingerprint(source)
     shutil.copytree(source, target)
     return fingerprint(target)
@@ -97,21 +97,21 @@ def guarded_destination(project, relative):
         if part == project:
             break
         if part.is_symlink():
-            raise ValueError('Destino contém link simbólico: ' + str(part))
+            raise ValueError('Destination contains a symbolic link: ' + str(part))
     if not target.resolve().is_relative_to(project):
-        raise ValueError('Destino fora do projeto.')
+        raise ValueError('Destination outside the project.')
     return target
 
 def install(project, agent='claude-code', core_only=False, replace=False, source_cache=None,
             root=ROOT):
     manifest = load_manifest(root)
     if agent not in TARGETS:
-        raise ValueError('Agente não suportado: ' + agent)
+        raise ValueError('Unsupported agent: ' + agent)
     project = Path(project).resolve()
     if not project.is_dir():
-        raise ValueError('O diretório do projeto precisa existir.')
+        raise ValueError('The project directory must exist.')
     if not core_only and shutil.which('git') is None:
-        raise ValueError('Git é necessário para instalar as skills comunitárias.')
+        raise ValueError('Git is required to install the community skills.')
     entries = []
     with tempfile.TemporaryDirectory(prefix='jade-stage-') as temp:
         stage = Path(temp)
@@ -126,9 +126,9 @@ def install(project, agent='claude-code', core_only=False, replace=False, source
                 cached = Path(source_cache) / source['revision'] if source_cache else None
                 if cached and cached.is_dir():
                     if run_git('-C', cached, 'rev-parse', 'HEAD') != source['revision']:
-                        raise ValueError('Cache com revisão incorreta.')
+                        raise ValueError('Cache has the wrong revision.')
                     if run_git('-C', cached, 'status', '--porcelain', '--untracked-files=all'):
-                        raise ValueError('Cache contém alterações locais.')
+                        raise ValueError('Cache contains local changes.')
                     import tarfile, io
                     archive = subprocess.run(['git', '-C', str(cached), 'archive', source['revision'],
                                               '--', *[s['path'] for s in source['skills']]],
@@ -137,14 +137,14 @@ def install(project, agent='claude-code', core_only=False, replace=False, source
                         for member in tar.getmembers():
                             safe_relative(member.name)
                             if not (member.isfile() or member.isdir()):
-                                raise ValueError('Cache contém entrada não regular.')
+                                raise ValueError('Cache contains a non-regular entry.')
                         tar.extractall(source_root)
                 else:
                     checkout(source, source_root)
                 for item in source['skills']:
                     source_path = source_root / item['path']
                     if not source_path.resolve().is_relative_to(source_root.resolve()):
-                        raise ValueError('Skill fora da fonte.')
+                        raise ValueError('Skill outside the source.')
                     staged = stage / 'skills' / item['name']
                     copy_skill(source_path, staged, item['name'])
                     entries.append((staged, TARGETS[agent] + '/' + item['name']))
@@ -159,8 +159,8 @@ def install(project, agent='claude-code', core_only=False, replace=False, source
             target = guarded_destination(project, relative)
             same = target.exists() and fingerprint(target) == fingerprint(source)
             if target.exists() and not same and not replace:
-                raise ValueError('Arquivo existente diferente: ' + relative +
-                                 '. Revise e use --replace para atualizar com backup.')
+                raise ValueError('Existing file differs: ' + relative +
+                                 '. Review it and use --replace to update with a backup.')
             if not same:
                 changes.append((source, target, relative))
         receipt = {'bundleVersion': manifest['bundleVersion'], 'agent': agent,
@@ -206,16 +206,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('agent', nargs='?', default='claude-code', choices=TARGETS)
     parser.add_argument('--project', type=Path, default=Path.cwd())
-    parser.add_argument('--core-only', action='store_true', help='Instalar só as skills próprias, sem rede.')
-    parser.add_argument('--replace', action='store_true', help='Atualizar arquivos diferentes, mantendo backup.')
-    parser.add_argument('--source-cache', type=Path, help='Checkouts limpos nomeados pelo SHA para instalação offline.')
+    parser.add_argument('--core-only', action='store_true', help='Install only Jade\'s own skills, without network.')
+    parser.add_argument('--replace', action='store_true', help='Update differing files, keeping a backup.')
+    parser.add_argument('--source-cache', type=Path, help='Clean checkouts named by SHA for offline installation.')
     args = parser.parse_args()
     try:
         result = install(args.project, args.agent, args.core_only, args.replace, args.source_cache)
         print(json.dumps(result, ensure_ascii=False, indent=2))
-        print('Instalação concluída. Autentique os conectores no cliente antes de usá-los.')
+        print('Installation complete. Authenticate the connectors in the client before using them.')
     except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as error:
-        print('Instalação não concluída: ' + str(error), file=sys.stderr)
+        print('Installation not completed: ' + str(error), file=sys.stderr)
         return 1
     return 0
 

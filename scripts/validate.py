@@ -15,18 +15,18 @@ def main():
     for name in manifest['localSkills']:
         path = ROOT / 'skills' / name / 'SKILL.md'
         assert skill_name(path) == name, name
-        assert len(path.read_text().splitlines()) < 500, name
+        assert len(path.read_text(encoding='utf-8').splitlines()) < 500, name
     for path in (ROOT / 'skills').rglob('*.md'):
-        for link in re.findall(r'\]\(([^)]+)\)', path.read_text()):
+        for link in re.findall(r'\]\(([^)]+)\)', path.read_text(encoding='utf-8')):
             if '://' not in link and not link.startswith('#'):
                 assert (path.parent / link.split('#')[0]).is_file(), (path, link)
-    agent = (ROOT / '.claude/agents/jade.md').read_text().split('---', 2)[1]
+    agent = (ROOT / '.claude/agents/jade.md').read_text(encoding='utf-8').split('---', 2)[1]
     listed = re.findall(r'^  - ([a-z0-9-]+)$', agent, re.M)
-    assert listed == ['jade-workflow'], listed
+    assert listed == ['jade-workflow', 'jade-openspec'], listed
     assert manifest['bundleVersion'] == (ROOT / 'VERSION').read_text().strip()
     subprocess.run([sys.executable, str(ROOT / 'scripts/sync-instructions.py'), '--check'], check=True)
     subprocess.run(['bash', '-n', str(ROOT / 'scripts/install-skills.sh')], check=True)
-    print('PASS: manifesto, skills locais, referências, preload e instruções portáveis.')
+    print('PASS: manifest, local skills, references, preload and portable instructions.')
 
 if __name__ == '__main__':
     main()

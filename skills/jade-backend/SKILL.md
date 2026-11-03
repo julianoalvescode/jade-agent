@@ -1,42 +1,42 @@
 ---
 name: jade-backend
-description: Implementar e revisar back-end (APIs REST/GraphQL, serviços, dados, filas e jobs) com foco em qualidade, escalabilidade, segurança e performance. Usar quando a tarefa incluir no escopo endpoint, controller, service, repositório, migração, schema, job, fila, cache ou integração servidor a servidor. NÃO usar só para consumir API no front-end; nesse caso usar jade-backend-contract.
+description: Implement and review back end (REST/GraphQL APIs, services, data, queues and jobs) with a focus on quality, scalability, security and performance. Use when the task scope includes an endpoint, controller, service, repository, migration, schema, job, queue, cache or server-to-server integration. Do NOT use just to consume an API from the front end; use jade-backend-contract for that.
 ---
 
-# Engenharia back-end
+# Back-end engineering
 
-Ler [engineering.md](references/engineering.md) por seção conforme o impacto. Detectar a stack real (Java/Spring Boot, Node com Express/NestJS/Fastify, Python, Go, .NET etc.), seus padrões de camadas, ORM, migrações, testes e lint. **O padrão existente do projeto vence a preferência da agente.**
+Read [engineering.md](references/engineering.md) section by section according to impact. Detect the real stack (Java/Spring Boot, Node with Express/NestJS/Fastify, Python, Go, .NET, etc.), its layering patterns, ORM, migrations, tests and lint. **The project's existing pattern beats the agent's preference.**
 
-## Quando usar
+## When to use
 
-- O pedido inclui alterar ou criar código de servidor, banco, fila, job ou integração.
-- A tarefa full-stack exige mudar os dois lados de um contrato.
+- The request includes changing or creating server, database, queue, job or integration code.
+- A full-stack task requires changing both sides of a contract.
 
-Se o back-end não estiver no escopo autorizado, não alterar: usar `jade-backend-contract` para verificar o contrato e registrar a dependência.
+If the back end is not in the authorized scope, do not change it: use `jade-backend-contract` to check the contract and record the dependency.
 
-## Roteamento
+## Routing
 
-| Impacto | Seções da referência | Skills comunitárias complementares, se instaladas |
+| Impact | Reference sections | Complementary community skills, if installed |
 | --- | --- | --- |
-| Qualquer mudança | 1 repositório, 2 domínio, 9 testes, 10 validação, 11 revisão | domain-modeling, code-review-and-quality, verification-before-completion |
-| API/contrato | 3 design de API e compatibilidade | api-and-interface-design, contract-first |
-| Dados | 4 modelagem, migração e transações | — |
-| Escalabilidade | 5 concorrência, idempotência, filas e cache | — |
-| Segurança | 6 OWASP API Top 10 e segredos | owasp-security-check |
-| Performance | 7 medição, consultas e orçamento | — |
-| Operação | 8 observabilidade e resiliência | — |
-| Bug | Diagnóstico com causa raiz provada | systematic-debugging |
-| TDD | Somente pedido explícito ou fronteira acordada | tdd |
+| Any change | 1 repository, 2 domain, 9 tests, 10 validation, 11 review | domain-modeling, code-review-and-quality, verification-before-completion |
+| API/contract | 3 API design and compatibility | api-and-interface-design, contract-first |
+| Data | 4 modeling, migrations and transactions | — |
+| Scalability | 5 concurrency, idempotency, queues and cache | — |
+| Security | 6 OWASP API Top 10 and secrets | owasp-security-check |
+| Performance | 7 measurement, queries and budget | — |
+| Operations | 8 observability and resilience | — |
+| Bug | Diagnosis with proven root cause | systematic-debugging |
+| TDD | Only on explicit request or agreed boundary | tdd |
 
-Carregar só as skills pertinentes. Sem a skill complementar instalada, seguir a referência própria e informar a ausência quando relevante.
+Load only the relevant skills. Without the complementary skill installed, follow Jade's own reference and report the absence when relevant.
 
-## Regras centrais
+## Core rules
 
-- Contrato primeiro: mudar API pública somente com compatibilidade retroativa ou versão nova acordada. Atualizar OpenAPI/schema e tipos do front no mesmo escopo.
-- Validar toda entrada na fronteira, autorizar no servidor por recurso (anti-IDOR/BOLA) e nunca confiar em dado do cliente.
-- Consultas parametrizadas, sem N+1, com índice e paginação em listas. Medir antes de otimizar.
-- Migração reversível, compatível com a versão anterior em execução e nunca aplicada em ambiente compartilhado sem autorização.
-- Operações repetíveis devem ser idempotentes; chamadas externas com timeout, retry com backoff e limite.
-- Logs estruturados sem segredo nem PII; erros sem stack trace para o cliente.
-- Não alterar infraestrutura, permissões, banco compartilhado ou deploy sem pedido explícito.
-- Testar comportamento (unitário + integração na fronteira real) e apresentar evidências pelo `frontend-quality-gate`.
+- Contract first: change a public API only with backward compatibility or an agreed new version. Update OpenAPI/schema and front-end types in the same scope.
+- Validate every input at the boundary, authorize on the server per resource (anti-IDOR/BOLA) and never trust client data.
+- Parameterized queries, no N+1, with indexes and pagination on lists. Measure before optimizing.
+- Migrations are reversible, compatible with the previous running version and never applied to a shared environment without authorization.
+- Repeatable operations must be idempotent; external calls use a timeout, retry with backoff and a limit.
+- Structured logs with no secrets or PII; errors without stack traces for the client.
+- Do not change infrastructure, permissions, shared databases or deploys without an explicit request.
+- Test behavior (unit + integration at the real boundary) and present evidence through `frontend-quality-gate`.

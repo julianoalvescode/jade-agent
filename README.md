@@ -2,194 +2,217 @@
 
 # 🪷 Jade
 
-**Uma engenheira full stack sênior para Claude Code — um agente, várias skills.**
+**A senior full-stack engineer for Claude Code — one agent, many skills, always with OpenSpec.**
 
-Implementa e revisa front-end (React, Next.js, TypeScript) e back-end (APIs,
-dados, filas) com foco em qualidade, escalabilidade, segurança, performance e
-UI/UX — com contexto real de Jira, Confluence, GitHub e Figma, e evidências
-critério a critério.
+Implements and reviews front end (React, Next.js, TypeScript) and back end (APIs,
+data, queues) with a focus on quality, scalability, security, performance and
+UI/UX — with real context from Jira, Confluence, GitHub and Figma, spec-driven by
+OpenSpec, and evidence criterion by criterion.
 
-<sub>Versão 3.0.0 · Claude Code · Codex · Cursor · Copilot · Windsurf · Gemini CLI · Cline</sub>
+<sub>Version 3.0.0 · Claude Code · Codex · Cursor · Copilot · Windsurf · Gemini CLI · Cline</sub>
 
 </div>
 
 ---
 
-## Por que Jade
+## Why Jade
 
-Jade **não é um gerador de telas**. É uma engenheira full stack sênior que
-investiga antes de editar, reutiliza o que o projeto já tem, respeita a stack
-existente e nunca declara pronto sem evidência. Um único agente
-(`jade`) carrega apenas o núcleo `jade-workflow` e **descobre as demais skills
-sob demanda**, conforme o impacto da tarefa — sem subagentes, sem contexto
-desperdiçado.
+Jade **is not a screen generator**. She is a senior full-stack engineer who
+investigates before editing, reuses what the project already has, respects the
+existing stack and never declares done without evidence. A single agent
+(`jade`) preloads only `jade-workflow` and `jade-openspec`, and **discovers the
+other skills on demand**, according to the task impact — no subagents, no wasted
+context.
 
 > [!NOTE]
-> **Um agente, várias skills.** A arquitetura é deliberada: só `jade-workflow` é
-> pré-carregada. UI, Figma, entrega, testes e segurança entram como skills
-> separadas apenas quando a tarefa as exige.
+> **One agent, many skills.** Only `jade-workflow` (the core) and `jade-openspec`
+> (the spec-driven flow) are preloaded. UI, Figma, back end, delivery, tests and
+> security load as separate skills only when the task needs them.
 
-## Skills próprias
+## Own skills
 
-| Skill | Papel |
+| Skill | Role |
 | --- | --- |
-| **`jade-workflow`** | Núcleo operacional: início, roteamento e entrega com evidências. É a única pré-carregada. |
-| **`jade-frontend`** | Engenharia de front-end: reconhecimento de UI, reuso, grade de 8 pontos e implementação. |
-| **`jade-figma-to-code`** | Coordena Figma → código com leitura seletiva, reuso de componentes e economia de tokens. |
-| **`jade-backend-contract`** | 🆕 Opcional/lazy: valida o contrato front↔back (endpoint, request, response, tipos) via `contract-first`. |
-| **`jade-backend`** | 🆕 Engenharia back-end: API, dados e migrações, escalabilidade, segurança OWASP API, performance e observabilidade. |
-| **`jade-delivery`** | Jira, Confluence, GitHub e contratos entre repos, sem duplicar registros. |
-| **`frontend-quality-gate`** | Gate full stack por evidências: `PASS`/`FAIL`/`BLOCKED`/`NOT RUN`/`N/A` (nome mantido por compatibilidade). |
+| **`jade-workflow`** | Operating core: pillars, start, routing and evidence-backed delivery. Preloaded. |
+| **`jade-openspec`** | 🆕 Mandatory OpenSpec flow: explore, propose, apply, verify and archive with Jade's rules. Preloaded. |
+| **`jade-frontend`** | Front-end engineering: UI recon, reuse, 8-point grid, web performance and UX. |
+| **`jade-backend`** | 🆕 Back-end engineering: API, data and migrations, scalability, OWASP API security, performance and observability. |
+| **`jade-figma-to-code`** | Coordinates Figma → code with selective reading, component reuse and token economy. |
+| **`jade-backend-contract`** | Optional/lazy: validates the front ↔ back contract (endpoint, request, response, types) via `contract-first`. |
+| **`jade-delivery`** | Jira, Confluence, GitHub and cross-repo contracts, without duplicate records. |
+| **`frontend-quality-gate`** | Full-stack evidence gate: `PASS`/`FAIL`/`BLOCKED`/`NOT RUN`/`N/A` (name kept for compatibility). |
 
-## Pilares
-
-| Pilar | Front-end | Back-end |
-| --- | --- | --- |
-| Qualidade | TypeScript estrito, testes de comportamento, revisão | Camadas do projeto, testes unitários e de integração |
-| Escalabilidade | Componentes reutilizáveis, paginação, virtualização | Sem estado local, idempotência, filas, cache, limites |
-| Segurança | XSS, tokens, CSP, OWASP client-side | BOLA/IDOR, mass assignment, injeção, SSRF, segredos |
-| Performance | Web Vitals (LCP, INP, CLS), bundle, waterfalls | N+1, índices, `EXPLAIN`, timeouts, pool |
-| UI/UX | Design system, grade 8pt, estados, WCAG 2.2 AA | Erros claros e status HTTP corretos |
-
-Mais **21 skills comunitárias** (fixadas por commit em `skills-lock.json`)
-complementam as regras próprias: `ui-recon`, `spacing-system`,
+Plus **21 community skills** (pinned by commit in `skills-lock.json`)
+complement Jade's own rules: `ui-recon`, `spacing-system`,
 `contract-first`, `figma-design-to-code`, `react-hook-form`, `state-management`,
-`owasp-security-check`, `systematic-debugging`, entre outras.
+`owasp-security-check`, `systematic-debugging`, among others.
 
-## 🎨 Figma → código (`jade-figma-to-code`)
+## Pillars
 
-Acionada automaticamente quando o pedido traz um frame, node ou URL do Figma
-(«implemente esta tela», «converta este node em React», «ajuste a UI ao
-design»). Coordena o fluxo sem reescrever as skills oficiais:
-
-```
-A. Discovery       → identificar o node exato (exige node-id)
-B. Project Mapping → ui-recon: mapear componente/token existente
-C. Extraction      → figma-design-to-code: get_design_context (1 chamada)
-D. Implementation  → código de produção na stack real + grade 8pt
-E. Validation      → lint/types/testes direcionados + comparação visual
-F. Delivery        → resumo com evidências e pendências reais
-```
-
-### Economia de tokens em três níveis
-
-| Nível | Lê | Para quando |
+| Pillar | Front end | Back end |
 | --- | --- | --- |
-| **1 — mínimo** | stack, convenções e candidatos por **busca de símbolo/nome/import** + 1 chamada ao node | basta para mapear |
-| **2 — específico** | só os arquivos da feature e do node (trechos, não arquivos inteiros) | a implementação está coberta |
-| **3 — expandido** | dependências extras (subnodes, contrato de API) **só com necessidade comprovada** | — |
+| Quality | Strict TypeScript, behavior tests, review | Project layers, unit and integration tests |
+| Scalability | Reusable components, pagination, virtualization | No local state, idempotency, queues, cache, limits |
+| Security | XSS, tokens, CSP, OWASP client-side | BOLA/IDOR, mass assignment, injection, SSRF, secrets |
+| Performance | Web Vitals (LCP, INP, CLS), bundle, waterfalls | N+1, indexes, `EXPLAIN`, timeouts, pool |
+| UI/UX | Design system, 8pt grid, states, WCAG 2.2 AA | Clear errors and correct HTTP statuses |
 
-Regras firmes: nunca carregar o arquivo Figma inteiro, uma chamada MCP por node
-(reaproveitando o contexto), nunca reler arquivo sem alteração, saídas curtas.
-**Nunca** sacrificar correção, segurança ou fidelidade visual por tokens.
+## 📐 Always with OpenSpec (`jade-openspec`)
 
-### Stack agnóstica
+Every Jade invocation runs inside [OpenSpec](https://github.com/Fission-AI/OpenSpec).
+OpenSpec defines **what** to build; Jade's skills define **how**.
 
-Jade **detecta** o framework, TS/JS, biblioteca de UI, design system, estilização
-(Tailwind, CSS Modules, Styled Components, shadcn…), estado, testes e lint — e o
-**padrão existente do projeto vence as preferências do agente**. Se já existe um
-`Button`, `Input` ou `Modal`, reutiliza antes de criar.
+| OpenSpec phase | What Jade does |
+| --- | --- |
+| explore | Investigates the repo and compares options on the five pillars; no code |
+| propose | Writes `proposal.md`, delta specs, `design.md` (with one line per pillar) and `tasks.md` |
+| apply | Implements tasks in order with the right skills; ticks a task only with evidence |
+| verify | Runs `frontend-quality-gate` against every requirement and scenario |
+| sync / archive | Only after the gate is `READY` and the user agrees |
 
-## 🔌 Contrato front ↔ back (`jade-backend-contract`)
+Questions and reviews use explore. Any code change, even a small fix, gets a
+change. If `openspec/` is missing and the CLI exists, Jade runs `openspec init`.
+If the CLI is missing, Jade asks you to install it
+(`npm install -g @fission-ai/openspec@latest`) and writes the artifacts by hand
+in the same structure meanwhile. Jade does not commit `openspec/` unless the
+project already versions it or you ask.
 
-Skill **opcional** com **lazy loading**: só é carregada quando a tarefa toca uma
-fronteira de API — tela do Figma que consome API, ticket Jira com endpoints,
-mudança em services/requests/responses/DTOs, auth/authz, ou pedido explícito de
-checagem de contrato. **Não** é carregada em tarefas puramente visuais (CSS,
-layout, responsividade, componentes estáticos).
+## 🎨 Figma → code (`jade-figma-to-code`)
 
-Coordena a skill da comunidade [`contract-first`](https://skills.sh/affaan-m/ecc/contract-first)
-(fonte de verdade e verificação) com a descoberta entre repos da Jade:
+Triggered automatically when the request includes a Figma frame, node or URL
+("implement this screen", "convert this node to React", "match the UI to the
+design"). It coordinates the flow without rewriting the official skills:
 
-1. detecta o repo back-end (via `jade.project.json`, instruções, links de
-   Jira/Confluence e a integração GitHub da Jade);
-2. localiza **só** os endpoints da tarefa (busca por rota/símbolo);
-3. elege a fonte de verdade (OpenAPI, GraphQL Schema, JSON Schema; senão a
-   implementação real, com nível de confiança);
-4. compara endpoint, request, response e tipos TS do front com o contrato e
-   **reporta incompatibilidades** — sem alterar o back-end nem inventar contratos.
+```
+A. Discovery       → identify the exact node (requires node-id)
+B. Project Mapping → ui-recon: map existing component/token
+C. Extraction      → figma-design-to-code: get_design_context (1 call)
+D. Implementation  → production code on the real stack + 8pt grid
+E. Validation      → targeted lint/types/tests + visual comparison
+F. Delivery        → evidence-backed summary and real open items
+```
+
+### Token economy in three levels
+
+| Level | Reads | Stops when |
+| --- | --- | --- |
+| **1 — minimal** | stack, conventions and candidates via **symbol/name/import search** + 1 node call | enough to map |
+| **2 — specific** | only the feature and node files (excerpts, not whole files) | the implementation is covered |
+| **3 — expanded** | extra dependencies (subnodes, API contract) **only with proven need** | — |
+
+Firm rules: never load the whole Figma file, one MCP call per node (reusing the
+context), never reread an unchanged file, short outputs. **Never** sacrifice
+correctness, security or visual fidelity for tokens.
+
+### Stack-agnostic
+
+Jade **detects** the framework, TS/JS, UI library, design system, styling
+(Tailwind, CSS Modules, Styled Components, shadcn…), state, tests and lint — and
+**the project's existing pattern beats the agent's preferences**. If a `Button`,
+`Input` or `Modal` already exists, she reuses it before creating one.
+
+## 🔌 Front ↔ back contract (`jade-backend-contract`)
+
+An **optional** skill with **lazy loading**: loaded only when the task touches an
+API boundary — a Figma screen that consumes an API, a Jira ticket with endpoints,
+changes to services/requests/responses/DTOs, auth/authz, or an explicit contract
+check request. It is **not** loaded for purely visual tasks (CSS, layout,
+responsiveness, static components).
+
+It coordinates the community skill [`contract-first`](https://skills.sh/affaan-m/ecc/contract-first)
+(source of truth and verification) with Jade's cross-repo discovery:
+
+1. detects the back-end repo (via `jade.project.json`, instructions, Jira/Confluence
+   links and Jade's GitHub integration);
+2. locates **only** the task's endpoints (route/symbol search);
+3. picks the source of truth (OpenAPI, GraphQL Schema, JSON Schema; otherwise the
+   real implementation, with a confidence level);
+4. compares the front end's endpoint, request, response and TS types with the
+   contract and **reports mismatches** — without inventing contracts. When the back
+   end is in scope, `jade-backend` implements both sides.
 
 Stacks: Java/Spring Boot, Node (Express, NestJS, Fastify), REST + OpenAPI/Swagger,
-GraphQL. Back-end inacessível → `BLOCKED` com as verificações possíveis, sem
-simular aprovação. Integra-se ao `jade-figma-to-code` apenas quando a tela usa API.
+GraphQL. Back end unreachable → `BLOCKED` with the possible checks, without
+simulating approval.
 
-## Instalar no seu projeto
+## Install in your project
 
-Requisitos: **Python 3.10+** e **Git**. A instalação completa precisa de rede
-para baixar os commits do manifesto; Node/npm não são necessários para instalar
-a Jade.
+Requirements: **Python 3.10+** and **Git**. The full install needs network access
+to fetch the manifest commits; Node/npm are not needed to install Jade (only to
+install the OpenSpec CLI).
 
 ```bash
-# instalação completa (núcleo + 21 skills comunitárias)
-bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto
+# full install (own skills + 21 community skills)
+bash /path/jade-agent/scripts/install-skills.sh claude-code --project /path/my-project
 
-# somente as sete skills próprias, sem rede
-bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto --core-only
+# only the eight own skills, no network
+bash /path/jade-agent/scripts/install-skills.sh claude-code --project /path/my-project --core-only
 
-# atualizar preservando arquivos divergentes (backup em .jade/backups/)
-bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto --replace
+# update while preserving differing files (backup in .jade/backups/)
+bash /path/jade-agent/scripts/install-skills.sh claude-code --project /path/my-project --replace
 ```
 
-O instalador **não** altera `CLAUDE.md`, `AGENTS.md`, `.mcp.json` ou configuração
-pessoal: conflitos são informados antes de escrever. Também aceita `codex`,
-`cursor`, `github-copilot`, `windsurf`, `gemini-cli`, `cline` e `universal` —
-esses modos instalam em `.agents/skills` (ou equivalente) e gravam `JADE.md`.
+The installer does **not** change `CLAUDE.md`, `AGENTS.md`, `.mcp.json` or personal
+configuration: conflicts are reported before writing. It also accepts `codex`,
+`cursor`, `github-copilot`, `windsurf`, `gemini-cli`, `cline` and `universal` —
+those modes install into `.agents/skills` (or equivalent) and write `JADE.md`.
 
-## Configurar e usar
+## Configure and use
 
-1. Copie `jade.project.example.json` para `jade.project.json` e preencha os repos,
-   documentos e ambientes conhecidos (campos vazios = desconhecido, não contrato).
-2. Reutilize os conectores autenticados — Jira/Confluence, GitHub e **Figma**. Veja
-   [docs/connectors.md](docs/connectors.md). O exemplo de MCP não traz credenciais.
-3. Abra uma sessão do Claude no projeto e peça.
+1. Copy `jade.project.example.json` to `jade.project.json` and fill in the known repos,
+   documents and environments (empty fields = unknown, not a contract).
+2. Reuse the authenticated connectors — Jira/Confluence, GitHub and **Figma**. See
+   [docs/connectors.md](docs/connectors.md). The MCP example has no credentials.
+3. Install the OpenSpec CLI and run `openspec init` in the project (or let Jade do it).
+4. Open a Claude session in the project and ask.
 
-**Exemplo — ticket completo:**
+**Example — full ticket:**
 
-> Use a agente Jade para implementar o ticket PROJ-123. Leia os documentos
-> vinculados, confira o contrato no back-end e valide os critérios. Prepare o PR
-> com as evidências.
+> Use the Jade agent to implement ticket PROJ-123. Read the linked documents,
+> check the back-end contract and validate the criteria. Prepare the PR
+> with the evidence.
 
-**Exemplo — Figma → código:**
+**Example — Figma → code:**
 
-> Jade, implemente esta tela do Figma:
-> `https://www.figma.com/design/<fileKey>/Tela?node-id=12-345`.
-> Reutilize os componentes do projeto e mantenha a grade de 8 pontos.
+> Jade, implement this Figma screen:
+> `https://www.figma.com/design/<fileKey>/Screen?node-id=12-345`.
+> Reuse the project components and keep the 8-point grid.
 
 > [!IMPORTANT]
-> **Figma MCP.** Se `get_design_context` não estiver exposto/autenticado, a Jade
-> registra `BLOCKED` na etapa visual e **não recria a tela de memória**. Conecte o
-> servidor `figma` (`claude mcp add --transport http figma https://mcp.figma.com/mcp`)
-> e conclua o OAuth em `/mcp`. A entrada também consta em `.mcp.example.json`.
+> **Figma MCP.** If `get_design_context` is not exposed/authenticated, Jade
+> records `BLOCKED` on the visual step and **does not recreate the screen from memory**.
+> Connect the `figma` server (`claude mcp add --transport http figma https://mcp.figma.com/mcp`)
+> and complete OAuth in `/mcp`. The entry is also in `.mcp.example.json`.
 
-## Entrega com evidências
+## Evidence-backed delivery
 
-Cada tarefa relaciona **critério → implementação → evidência → estado**, usando
-`PASS`, `FAIL`, `BLOCKED`, `NOT RUN` ou `N/A`. A Jade distingue código
-implementado, validação, PR aberto, merge e deploy — e, ao retomar, verifica o
-estado remoto antes de escrever, evitando duplicação.
+Each task links **criterion → implementation → evidence → state**, using
+`PASS`, `FAIL`, `BLOCKED`, `NOT RUN` or `N/A`. Jade distinguishes implemented code,
+validation, open PR, merge and deploy — and, when resuming, checks the remote
+state before writing, avoiding duplicates.
 
-## Manutenção e verificação
+## Maintenance and verification
 
-A fonte canônica das regras comuns é `skills/jade-workflow/SKILL.md`. Após
-alterá-la:
+The canonical source of the shared rules is `skills/jade-workflow/SKILL.md`. After
+changing it:
 
 ```bash
-python3 scripts/sync-instructions.py            # regenera AGENTS.md, AGENT-PROMPT.md e jade.md
-python3 scripts/validate.py                      # manifesto, skills, referências, preload e paridade
-python3 -m unittest discover -s tests -v         # testes do instalador e das skills próprias
+python3 scripts/sync-instructions.py            # regenerates AGENTS.md, AGENT-PROMPT.md and jade.md
+python3 scripts/validate.py                      # manifest, skills, references, preload and parity
+python3 -m unittest discover -s tests -v         # installer and own-skill tests
 ```
 
-Nenhum comando precisa de rede. O CI executa essas verificações
-([.github/workflows/validate-agent.yml](.github/workflows/validate-agent.yml)) e
-oferece um smoke test completo em `workflow_dispatch`. O instalador consome apenas
-o manifesto, busca o SHA exato, confere o nome da skill e **não executa scripts de
-terceiros** durante a instalação. Ver [docs/validation.md](docs/validation.md) e
+No command needs network access. CI runs these checks
+([.github/workflows/validate-agent.yml](.github/workflows/validate-agent.yml)) and
+offers a full smoke test on `workflow_dispatch`. The installer only consumes
+the manifest, fetches the exact SHA, checks the skill name and **does not run
+third-party scripts** during installation. See [docs/validation.md](docs/validation.md) and
 [docs/evaluation-scenarios.md](docs/evaluation-scenarios.md).
 
-## Proveniência
+## Provenance
 
-As skills próprias e as regras de engenharia evoluem a configuração original de
+Jade's own skills and engineering rules evolve the original configuration of
 `julianoalvescode/jade-agent` (base `5f9af5a777be07db7f316ca60512d8f38ff33b6d`).
-As skills de terceiros são baixadas dos repositórios e commits do manifesto,
-mantendo seus arquivos; o pacote não as redistribui como conteúdo próprio. Fixar
-o commit garante rastreabilidade, não substitui revisão de segurança.
+Third-party skills are downloaded from the manifest repositories and commits,
+keeping their files; the package does not redistribute them as its own content.
+Pinning the commit guarantees traceability; it does not replace a security review.
