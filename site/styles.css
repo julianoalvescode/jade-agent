@@ -1,13 +1,14 @@
 /* Jade docs — layout inspired by hermes-agent.nousresearch.com. 8-point grid. */
 :root {
-  --blue: #0000f2;
-  --blue-deep: #00009e;
-  --accent: #edff45;
-  --paper: #fdfdfd;
-  --paper-alt: #f2f3f7;
-  --ink: #12123a;
-  --ink-soft: #4a4a6a;
-  --line: #d9dbe6;
+  /* Soft jade palette. Names kept so the layout rules stay unchanged. */
+  --blue: #2f5d57;
+  --blue-deep: #254a45;
+  --accent: #cfeadb;
+  --paper: #fbfaf7;
+  --paper-alt: #f1f4f1;
+  --ink: #1f2a28;
+  --ink-soft: #55625f;
+  --line: #dde3df;
   --white: #ffffff;
 
   --pass: #0a7d3c;
@@ -55,7 +56,7 @@ code { font-family: var(--font-mono); font-size: 0.9em; }
   background: var(--blue); color: var(--white);
   transition: box-shadow 200ms ease;
 }
-.site-header.is-scrolled { box-shadow: 0 8px 24px rgba(0, 0, 80, 0.24); }
+.site-header.is-scrolled { box-shadow: 0 8px 24px rgba(20, 40, 36, 0.16); }
 .nav { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: 16px; }
 .brand {
   display: inline-flex; align-items: center; gap: 8px;
