@@ -2,13 +2,14 @@
 
 # 🪷 Jade
 
-**Uma agente de front-end para Claude Code — um agente, várias skills.**
+**Uma engenheira full stack sênior para Claude Code — um agente, várias skills.**
 
-Implementa e revisa React, Next.js e TypeScript com contexto real de
-Jira, Confluence, GitHub, Figma e contratos de back-end — e entrega
-evidências critério a critério.
+Implementa e revisa front-end (React, Next.js, TypeScript) e back-end (APIs,
+dados, filas) com foco em qualidade, escalabilidade, segurança, performance e
+UI/UX — com contexto real de Jira, Confluence, GitHub e Figma, e evidências
+critério a critério.
 
-<sub>Versão 2.1.0 · Claude Code · Codex · Cursor · Copilot · Windsurf · Gemini CLI · Cline</sub>
+<sub>Versão 3.0.0 · Claude Code · Codex · Cursor · Copilot · Windsurf · Gemini CLI · Cline</sub>
 
 </div>
 
@@ -16,7 +17,7 @@ evidências critério a critério.
 
 ## Por que Jade
 
-Jade **não é um gerador de telas**. É uma engenheira de front-end sênior que
+Jade **não é um gerador de telas**. É uma engenheira full stack sênior que
 investiga antes de editar, reutiliza o que o projeto já tem, respeita a stack
 existente e nunca declara pronto sem evidência. Um único agente
 (`jade`) carrega apenas o núcleo `jade-workflow` e **descobre as demais skills
@@ -36,8 +37,19 @@ desperdiçado.
 | **`jade-frontend`** | Engenharia de front-end: reconhecimento de UI, reuso, grade de 8 pontos e implementação. |
 | **`jade-figma-to-code`** | Coordena Figma → código com leitura seletiva, reuso de componentes e economia de tokens. |
 | **`jade-backend-contract`** | 🆕 Opcional/lazy: valida o contrato front↔back (endpoint, request, response, tipos) via `contract-first`. |
+| **`jade-backend`** | 🆕 Engenharia back-end: API, dados e migrações, escalabilidade, segurança OWASP API, performance e observabilidade. |
 | **`jade-delivery`** | Jira, Confluence, GitHub e contratos entre repos, sem duplicar registros. |
-| **`frontend-quality-gate`** | Prontidão por evidências: `PASS`/`FAIL`/`BLOCKED`/`NOT RUN`/`N/A`. |
+| **`frontend-quality-gate`** | Gate full stack por evidências: `PASS`/`FAIL`/`BLOCKED`/`NOT RUN`/`N/A` (nome mantido por compatibilidade). |
+
+## Pilares
+
+| Pilar | Front-end | Back-end |
+| --- | --- | --- |
+| Qualidade | TypeScript estrito, testes de comportamento, revisão | Camadas do projeto, testes unitários e de integração |
+| Escalabilidade | Componentes reutilizáveis, paginação, virtualização | Sem estado local, idempotência, filas, cache, limites |
+| Segurança | XSS, tokens, CSP, OWASP client-side | BOLA/IDOR, mass assignment, injeção, SSRF, segredos |
+| Performance | Web Vitals (LCP, INP, CLS), bundle, waterfalls | N+1, índices, `EXPLAIN`, timeouts, pool |
+| UI/UX | Design system, grade 8pt, estados, WCAG 2.2 AA | Erros claros e status HTTP corretos |
 
 Mais **21 skills comunitárias** (fixadas por commit em `skills-lock.json`)
 complementam as regras próprias: `ui-recon`, `spacing-system`,
@@ -111,7 +123,7 @@ a Jade.
 # instalação completa (núcleo + 21 skills comunitárias)
 bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto
 
-# somente as seis skills próprias, sem rede
+# somente as sete skills próprias, sem rede
 bash /caminho/jade-agent/scripts/install-skills.sh claude-code --project /caminho/meu-projeto --core-only
 
 # atualizar preservando arquivos divergentes (backup em .jade/backups/)
@@ -164,7 +176,7 @@ alterá-la:
 ```bash
 python3 scripts/sync-instructions.py            # regenera AGENTS.md, AGENT-PROMPT.md e jade.md
 python3 scripts/validate.py                      # manifesto, skills, referências, preload e paridade
-python3 -m unittest discover -s tests -v         # 20 testes do instalador e da skill Figma
+python3 -m unittest discover -s tests -v         # testes do instalador e das skills próprias
 ```
 
 Nenhum comando precisa de rede. O CI executa essas verificações

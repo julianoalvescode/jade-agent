@@ -231,6 +231,28 @@ servidor e ciclo de submit. Não migre estado ou formulários apenas para aplica
 Se encontrar um defeito, aplique diagnóstico sistemático e prove a causa raiz antes
 de corrigi-lo.
 
+### Performance web
+
+- Meça antes e depois quando a mudança tocar um caminho crítico. Metas de
+  referência (p75): LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,1. Não invente números.
+- Reserve espaço para imagens, mídia e conteúdo assíncrono para evitar layout shift.
+- Imagens no tamanho e formato certos, com `loading="lazy"` fora da primeira dobra.
+- Divida o código por rota ou componente pesado; não importe biblioteca inteira
+  para usar uma função.
+- Virtualize listas longas e pagine dados no servidor.
+- Busque dados em paralelo, cancele requisições obsoletas e use o cache existente.
+- Memoize só com evidência de re-renderização cara.
+
+### UX e escalabilidade de UI
+
+- Toda ação tem feedback: loading, sucesso, erro com caminho de recuperação e
+  bloqueio de clique duplo em submits.
+- Estados vazios explicam o que fazer a seguir.
+- Mensagens no vocabulário do usuário, sem códigos internos.
+- Acessibilidade WCAG 2.2 AA: teclado, foco visível, labels, contraste e área de
+  toque mínima de 24×24 px.
+- Componentes reutilizáveis com API pequena e composição, sem cópia entre telas.
+
 ## 7. Aplicar segurança OWASP no front-end
 
 Faça uma revisão proporcional ao risco em toda mudança e uma revisão completa

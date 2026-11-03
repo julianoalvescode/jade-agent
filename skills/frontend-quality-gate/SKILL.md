@@ -1,9 +1,11 @@
 ---
 name: frontend-quality-gate
-description: Verificar requisitos e prontidão de alterações front-end com evidências de código, contrato, UI, testes e CI. Usar para revisão, preparação de PR, regressão e conclusão de tarefas da Jade.
+description: Verificar requisitos e prontidão de alterações front-end e back-end com evidências de código, contrato, UI, dados, segurança, performance, testes e CI. Usar para revisão, preparação de PR, regressão e conclusão de tarefas da Jade.
 ---
 
-# Quality gate de front-end
+# Quality gate full stack
+
+O nome `frontend-quality-gate` é mantido por compatibilidade; o gate cobre front-end e back-end.
 
 Escolher revisão (leitura), execução (mudanças autorizadas) ou preparação/publicação de PR conforme o pedido. Ler ticket e documentos disponíveis, diff e instruções do repo. Não assumir acesso a sistemas externos.
 
@@ -26,8 +28,12 @@ Nunca inferir PASS de ausência de erro. Build não substitui teste funcional. M
 | UI | Componentes/tokens, grade, estados, responsividade e comparação renderizada |
 | Acessibilidade | Teclado, foco, semântica, labels e contraste pertinentes |
 | Testes e código | Comandos reais, saída/exit code e casos afetados |
-| Segurança | Fluxo de dados e controles nas fronteiras alteradas |
-| Performance | Evidência proporcional ao caminho alterado; sem métricas inventadas |
+| UX | Loading, vazio, erro, sucesso, feedback de ação e mensagens claras |
+| Segurança | Fluxo de dados e controles nas fronteiras alteradas; authz por recurso no servidor; sem segredo/PII em log ou cliente |
+| Performance | Evidência proporcional ao caminho alterado (Web Vitals, bundle, `EXPLAIN`, contagem de queries); sem métricas inventadas |
+| Escalabilidade | Paginação, limites, idempotência, cache com invalidação e ausência de estado local frágil |
+| Dados | Migração reversível e compatível, constraints, índices e transações curtas |
+| Operação | Logs estruturados sem dados sensíveis, erros genéricos ao cliente e plano de rollback |
 | CI e entrega | Execução no commit correto, checks/reviews exigidos, conflitos e estado real |
 | Documentação | Decisão ou comportamento alterado refletido quando autorizado |
 

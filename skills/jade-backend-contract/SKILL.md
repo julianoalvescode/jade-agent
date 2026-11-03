@@ -74,7 +74,9 @@ corrija **o front-end** quando autorizado. Não invente campos/endpoints, não
 altere contrato público em silêncio e preserve consumidores existentes. Mudança
 que depende do time de back-end vira dependência explícita com estratégia de
 compatibilidade. **Não alterar o back-end automaticamente** — documente e só
-implemente mediante autorização.
+implemente mediante autorização. Quando o back-end estiver no escopo da tarefa
+(full stack), implemente a mudança com `jade-backend`, mantendo compatibilidade
+retroativa e atualizando schema e tipos dos dois lados.
 
 ## Integração com `jade-figma-to-code`
 

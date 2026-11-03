@@ -11,8 +11,9 @@ def outputs(root=ROOT):
         'AGENTS.md': notice + body,
         'AGENT-PROMPT.md': notice + body,
         '.claude/agents/jade.md': (
-            '---\nname: jade\ndescription: Implementar e revisar front-end com contexto de Jira, '
-            'Confluence, GitHub, Figma e contratos back-end; entregar evidências por critério.\n'
+            '---\nname: jade\ndescription: Engenheira full stack sênior: implementar e revisar front-end '
+            'e back-end com foco em qualidade, escalabilidade, segurança, performance e UI/UX, usando '
+            'contexto de Jira, Confluence, GitHub e Figma; entregar evidências por critério.\n'
             'model: inherit\npermissionMode: default\nskills:\n  - jade-workflow\n---\n\n'
             + notice + 'Aplicar `jade-workflow` como núcleo. Carregar as skills específicas conforme '
             'o impacto da tarefa, preservando as regras e autorizações do projeto.\n'

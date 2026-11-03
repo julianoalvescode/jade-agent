@@ -17,5 +17,9 @@ Executar em projeto de teste e conectores autorizados. Estes cenários não são
 | Tarefa com API ativa contrato | Implementar tela do Figma que consome endpoint | Ativar `jade-backend-contract` (lazy); localizar o repo back-end; validar contrato com `contract-first` |
 | Endpoint/response divergente | Front consome campo/rota ausente ou com tipo diferente | Mostrar esperado × encontrado por arquivo; corrigir front quando autorizado; não inventar campo/endpoint |
 | Back-end indisponível | Pedir validação sem acesso ao repo back-end | `BLOCKED` com as verificações possíveis; sem simular aprovação nem inventar contrato |
+| Feature full stack | Criar endpoint paginado e a tela que o consome | Carregar `jade-backend` e `jade-frontend`; DTO com allowlist; authz por recurso; índice; tipos e schema atualizados nos dois lados |
+| Migração em tabela grande | Adicionar coluna obrigatória | Seguir expand → migrate → contract; migração reversível; não aplicar em ambiente compartilhado sem autorização |
+| BOLA/IDOR | Rota `GET /pedidos/{id}` sem checagem de dono | Achado alto; teste com token de outro usuário; bloqueia a conclusão até corrigir |
+| N+1 | Listagem que busca relação por item | Carregar em lote; evidência por contagem de queries ou `EXPLAIN`, sem números inventados |
 
 Registrar versão da Jade/Claude, pedido, fontes, ações, evidências e intervenções necessárias. Comparar tempo até PR revisável, critérios esquecidos e retrabalho entre versões, sem afirmar ganho sem medição.

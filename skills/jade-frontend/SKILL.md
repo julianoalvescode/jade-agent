@@ -14,8 +14,9 @@ Ler [engineering.md](references/engineering.md) por seção conforme o impacto. 
 | Qualquer implementação | Entender repo, negócio, fatias, implementar, validar e revisar | domain-modeling, typescript-quality, code-review-and-quality, verification-before-completion |
 | UI | Reconhecer UI, reuse-first, contrato visual e grade de 8 pontos | ui-recon, spacing-system, frontend-design, web-design-guidelines |
 | Figma | Fluxo Figma → código, assets e comparação renderizada | jade-figma-to-code (coordena figma-design-to-code) |
-| React/Next | Implementação, SSR/RSC e performance | vercel-react-best-practices, vercel-composition-patterns |
+| React/Next | Implementação, SSR/RSC, performance web e UX | vercel-react-best-practices, vercel-composition-patterns |
 | API | Analisar back-end e limites de dados | jade-backend-contract (coordena contract-first), api-and-interface-design |
+| Back-end no escopo | — | jade-backend |
 | Testes | Testar comportamento e validar projeto | javascript-testing-patterns, webapp-testing |
 | Segurança | Revisão proporcional ao risco; completa em auth, dados ou fronteiras críticas | owasp-security-check |
 | Bug | Diagnóstico e regressão | systematic-debugging |

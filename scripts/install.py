@@ -206,7 +206,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('agent', nargs='?', default='claude-code', choices=TARGETS)
     parser.add_argument('--project', type=Path, default=Path.cwd())
-    parser.add_argument('--core-only', action='store_true', help='Instalar só as quatro skills próprias, sem rede.')
+    parser.add_argument('--core-only', action='store_true', help='Instalar só as skills próprias, sem rede.')
     parser.add_argument('--replace', action='store_true', help='Atualizar arquivos diferentes, mantendo backup.')
     parser.add_argument('--source-cache', type=Path, help='Checkouts limpos nomeados pelo SHA para instalação offline.')
     args = parser.parse_args()

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "bundleVersion": "2.2.0",
+  "bundleVersion": "3.0.0",
   "resolvedAt": "2026-10-07",
   "installer": "python-standard-library+git",
   "localSkills": [
@@ -9,6 +9,7 @@
     "jade-frontend",
     "jade-figma-to-code",
     "jade-backend-contract",
+    "jade-backend",
     "frontend-quality-gate"
   ],
   "sources": [

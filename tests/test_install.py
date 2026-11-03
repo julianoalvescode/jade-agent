@@ -26,7 +26,7 @@ class InstallerTests(unittest.TestCase):
     def test_core_install_preserves_project_instructions(self):
         (self.project / 'AGENTS.md').write_text('existing rules')
         result = jade.install(self.project, core_only=True)
-        self.assertEqual(result['skills'], 6)
+        self.assertEqual(result['skills'], 7)
         self.assertEqual((self.project / 'AGENTS.md').read_text(), 'existing rules')
         self.assertFalse((self.project / '.mcp.json').exists())
         self.assertTrue((self.project / '.claude/skills/jade-delivery/SKILL.md').is_file())
@@ -137,7 +137,7 @@ class FigmaToCodeSkillTests(unittest.TestCase):
     def test_core_install_discovers_skill_without_network(self):
         result = jade.install(self.project, core_only=True)
         # 4 skills originais + a nova coordenadora = 5 skills próprias.
-        self.assertEqual(result['skills'], 6)
+        self.assertEqual(result['skills'], 7)
         installed = self.project / '.claude/skills/jade-figma-to-code/SKILL.md'
         self.assertTrue(installed.is_file())
 
@@ -221,7 +221,7 @@ class BackendContractSkillTests(unittest.TestCase):
     def test_core_install_discovers_skill_without_network(self):
         result = jade.install(self.project, core_only=True)
         # 5 próprias anteriores + jade-backend-contract = 6.
-        self.assertEqual(result['skills'], 6)
+        self.assertEqual(result['skills'], 7)
         self.assertTrue((self.project / '.claude/skills/jade-backend-contract/SKILL.md').is_file())
 
     def test_no_regression_other_skills_still_install(self):
@@ -262,6 +262,47 @@ class BackendContractSkillTests(unittest.TestCase):
         self.assertIn('jade-backend-contract', workflow)
         figma = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
         self.assertIn('jade-backend-contract', figma)
+
+
+class FullStackSkillTests(unittest.TestCase):
+    """Garantias do perfil full stack: skill jade-backend, pilares e gate."""
+
+    SKILL = ROOT / 'skills/jade-backend/SKILL.md'
+    REF = ROOT / 'skills/jade-backend/references/engineering.md'
+
+    def test_registered_and_named(self):
+        self.assertIn('jade-backend', jade.load_manifest()['localSkills'])
+        self.assertEqual(jade.skill_name(self.SKILL), 'jade-backend')
+        self.assertTrue(self.REF.is_file())
+
+    def test_core_install_includes_backend(self):
+        with tempfile.TemporaryDirectory() as temp:
+            jade.install(Path(temp), core_only=True)
+            self.assertTrue((Path(temp) / '.claude/skills/jade-backend/SKILL.md').is_file())
+
+    def test_backend_covers_pillars(self):
+        body = self.REF.read_text()
+        for marker in ('Escalabilidade', 'Segurança', 'Performance', 'BOLA',
+                       'idempotente', 'N+1', 'expand → migrate → contract'):
+            self.assertIn(marker, body)
+
+    def test_workflow_declares_fullstack_pillars(self):
+        workflow = (ROOT / 'skills/jade-workflow/SKILL.md').read_text()
+        self.assertIn('engenheira full stack sênior', workflow)
+        for pillar in ('Qualidade', 'Escalabilidade', 'Segurança', 'Performance', 'UI/UX'):
+            self.assertIn(pillar, workflow)
+        self.assertIn('jade-backend`', workflow)
+        self.assertIn('engenheira full stack sênior', (ROOT / 'AGENTS.md').read_text())
+
+    def test_gate_covers_backend(self):
+        gate = (ROOT / 'skills/frontend-quality-gate/SKILL.md').read_text()
+        for area in ('Escalabilidade', 'Dados', 'Operação', 'UX'):
+            self.assertIn(area, gate)
+
+    def test_frontend_has_performance_and_ux(self):
+        eng = (ROOT / 'skills/jade-frontend/references/engineering.md').read_text()
+        for marker in ('Performance web', 'INP', 'WCAG 2.2 AA'):
+            self.assertIn(marker, eng)
 
 
 if __name__ == '__main__':
