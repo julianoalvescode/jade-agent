@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jade — Senior full-stack engineer agent</title>
+  <meta name="description" content="Jade is a senior full-stack engineer agent for Claude Code and other AI coding tools. Quality, scalability, security, performance and UI/UX, always spec-driven with OpenSpec.">
+  <meta property="og:title" content="Jade — Senior full-stack engineer agent">
+  <meta property="og:description" content="One agent, many skills, always with OpenSpec. Evidence criterion by criterion.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0000f2">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <nav class="container nav" aria-label="Main">
+      <a class="brand" href="#top" aria-label="Jade home">
+        <span class="brand-mark" aria-hidden="true">◆</span> JADE
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-nav-toggle>
+        <span class="sr-only">Menu</span>
+        <span aria-hidden="true">☰</span>
+      </button>
+      <ul class="nav-links" id="nav-links" data-nav-links>
+        <li><a href="#pillars">Pillars</a></li>
+        <li><a href="#openspec">OpenSpec</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a class="nav-cta" href="https://github.com/julianoalvescode/jade-agent">GitHub ↗</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="container hero-inner">
+        <p class="eyebrow">v3.0.0 · Claude Code · Codex · Cursor · Copilot · Windsurf · Gemini CLI · Cline</p>
+        <h1 class="hero-title" id="hero-title">The engineer<br>that ships<br>with evidence</h1>
+        <p class="hero-lead">Jade is a senior full-stack engineer agent. She investigates before editing, reuses what your project already has, runs every change through OpenSpec and never says “done” without proof.</p>
+        <div class="hero-actions">
+          <a class="btn btn-accent" href="#install">Get started</a>
+          <a class="btn btn-ghost" href="https://github.com/julianoalvescode/jade-agent">View on GitHub</a>
+        </div>
+        <div class="terminal" role="group" aria-label="Install command">
+          <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <pre><code><span class="prompt">$</span> bash jade-agent/scripts/install-skills.sh claude-code --project .
+<span class="muted">✓ 8 Jade skills · 21 community skills · agent “jade”</span>
+<span class="prompt">$</span> openspec init
+<span class="muted">✓ /opsx:propose · /opsx:apply · /opsx:archive</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section paper" id="pillars" aria-labelledby="pillars-title">
+      <div class="container">
+        <p class="kicker">Features</p>
+        <h2 class="section-title" id="pillars-title">Five pillars.<br>Every change.</h2>
+        <p class="section-lead">Each change is checked against the same five pillars, scaled to its risk. When they conflict: security, correctness, accessibility, performance, then taste.</p>
+        <ol class="cards">
+          <li class="card">
+            <span class="card-num">#1 Build</span>
+            <h3>Quality</h3>
+            <p>Readable, typed code. Tests that check behavior, not internals. A code review before every delivery.</p>
+          </li>
+          <li class="card">
+            <span class="card-num">#2 Grow</span>
+            <h3>Scalability</h3>
+            <p>No fragile local state. Pagination, limits, idempotent writes, queues and cache with a clear invalidation rule.</p>
+          </li>
+          <li class="card">
+            <span class="card-num">#3 Guard</span>
+            <h3>Security</h3>
+            <p>Validation and authorization on the server. OWASP checks at every changed boundary: BOLA/IDOR, XSS, injection, SSRF, secrets.</p>
+          </li>
+          <li class="card">
+            <span class="card-num">#4 Speed</span>
+            <h3>Performance</h3>
+            <p>Measure before optimizing. Web Vitals on the front end. No N+1, missing indexes or heavy work inside a request.</p>
+          </li>
+          <li class="card">
+            <span class="card-num">#5 Craft</span>
+            <h3>UI/UX</h3>
+            <p>Design-system reuse, a strict 8-point grid, loading/empty/error states and WCAG 2.2 AA accessibility.</p>
+          </li>
+          <li class="card card-accent">
+            <span class="card-num">#6 Spec</span>
+            <h3>OpenSpec, always</h3>
+            <p>Every invocation runs inside OpenSpec. The spec says what to build. Jade’s skills decide how.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section blue" id="openspec" aria-labelledby="openspec-title">
+      <div class="container">
+        <p class="kicker kicker-accent">Spec-driven</p>
+        <h2 class="section-title" id="openspec-title">Agree first.<br>Then build.</h2>
+        <p class="section-lead">Questions use <code>explore</code>. Any code change, even a small fix, gets an OpenSpec change. A task is ticked only when its evidence exists.</p>
+        <ol class="flow">
+          <li><span class="flow-step">01</span><h3>Explore</h3><p>Reads the repo and weighs options on the five pillars. No code.</p></li>
+          <li><span class="flow-step">02</span><h3>Propose</h3><p>Writes proposal, delta specs, design (one line per pillar) and tasks.</p></li>
+          <li><span class="flow-step">03</span><h3>Apply</h3><p>Builds task by task with the right skills: front end, back end, Figma, contract.</p></li>
+          <li><span class="flow-step">04</span><h3>Verify</h3><p>Runs the quality gate against every requirement and scenario.</p></li>
+          <li><span class="flow-step">05</span><h3>Archive</h3><p>Only when the gate is READY and you agree. Specs absorb what shipped.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section paper" id="skills" aria-labelledby="skills-title">
+      <div class="container">
+        <p class="kicker">One agent, many skills</p>
+        <h2 class="section-title" id="skills-title">Loaded only<br>when needed.</h2>
+        <p class="section-lead">The agent preloads two skills. The rest load at the step that uses them, so context stays small.</p>
+        <div class="table-wrap">
+          <table class="skills">
+            <thead>
+              <tr><th scope="col">Skill</th><th scope="col">Role</th><th scope="col">Loads</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>jade-workflow</code></td><td>Operating core: pillars, routing and evidence-backed delivery.</td><td><span class="tag tag-accent">Always</span></td></tr>
+              <tr><td><code>jade-openspec</code></td><td>OpenSpec phases mapped to Jade’s skills and evidence.</td><td><span class="tag tag-accent">Always</span></td></tr>
+              <tr><td><code>jade-frontend</code></td><td>UI recon, reuse-first, 8-point grid, web performance and UX.</td><td><span class="tag">UI code</span></td></tr>
+              <tr><td><code>jade-backend</code></td><td>API, data and migrations, scalability, OWASP API security, observability.</td><td><span class="tag">Server code</span></td></tr>
+              <tr><td><code>jade-figma-to-code</code></td><td>Figma node → production code with three-level token economy.</td><td><span class="tag">Figma URL</span></td></tr>
+              <tr><td><code>jade-backend-contract</code></td><td>Checks endpoint, request, response and types against the back end.</td><td><span class="tag">API boundary</span></td></tr>
+              <tr><td><code>jade-delivery</code></td><td>Jira, Confluence, GitHub and cross-repo work without duplicates.</td><td><span class="tag">Tickets &amp; PRs</span></td></tr>
+              <tr><td><code>frontend-quality-gate</code></td><td>Full-stack readiness by evidence: PASS, FAIL, BLOCKED, NOT RUN, N/A.</td><td><span class="tag">Code changed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Plus 21 community skills pinned by commit in <code>skills-lock.json</code>, such as <code>ui-recon</code>, <code>spacing-system</code>, <code>contract-first</code>, <code>owasp-security-check</code> and <code>systematic-debugging</code>.</p>
+      </div>
+    </section>
+
+    <section class="section paper-alt" id="evidence" aria-labelledby="evidence-title">
+      <div class="container split">
+        <div>
+          <p class="kicker">Delivery</p>
+          <h2 class="section-title" id="evidence-title">No proof,<br>no “done”.</h2>
+          <p class="section-lead">Every task ends with a matrix: criterion → implementation → evidence → state. Jade keeps code written, validated, PR open, merged and deployed apart.</p>
+        </div>
+        <ul class="states" aria-label="Evidence states">
+          <li><span class="state state-pass">PASS</span> Checked, with concrete evidence.</li>
+          <li><span class="state state-fail">FAIL</span> Checked, and the requirement broke.</li>
+          <li><span class="state state-blocked">BLOCKED</span> Access, data or a decision is missing.</li>
+          <li><span class="state state-notrun">NOT RUN</span> Relevant, not run. Reason and risk stated.</li>
+          <li><span class="state state-na">N/A</span> The change does not touch it.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section paper" id="install" aria-labelledby="install-title">
+      <div class="container">
+        <p class="kicker">Install</p>
+        <h2 class="section-title" id="install-title">Two minutes<br>to start.</h2>
+        <p class="section-lead">Needs Python 3.10+ and Git. Node is only needed for the OpenSpec CLI.</p>
+        <ol class="steps">
+          <li>
+            <h3>Install Jade into your project</h3>
+            <div class="code">
+              <button class="copy" type="button" data-copy>Copy</button>
+<pre><code>git clone https://github.com/julianoalvescode/jade-agent.git
+bash jade-agent/scripts/install-skills.sh claude-code --project /path/to/project</code></pre>
+            </div>
+            <p class="hint">Add <code>--core-only</code> for the eight Jade skills without network, or <code>--replace</code> to update with a backup in <code>.jade/backups/</code>.</p>
+          </li>
+          <li>
+            <h3>Set up OpenSpec</h3>
+            <div class="code">
+              <button class="copy" type="button" data-copy>Copy</button>
+<pre><code>npm install -g @fission-ai/openspec@latest
+cd /path/to/project &amp;&amp; openspec init</code></pre>
+            </div>
+          </li>
+          <li>
+            <h3>Connect your tools</h3>
+            <div class="code">
+              <button class="copy" type="button" data-copy>Copy</button>
+<pre><code>claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp
+claude mcp add --transport http figma https://mcp.figma.com/mcp</code></pre>
+            </div>
+            <p class="hint">Finish OAuth in <code>/mcp</code>. Copy <code>jade.project.example.json</code> to <code>jade.project.json</code> and fill in only what you know.</p>
+          </li>
+          <li>
+            <h3>Ask Jade</h3>
+            <blockquote class="prompt-card">Use the Jade agent to implement ticket PROJ-123. Read the linked documents, check the back-end contract and validate the criteria. Prepare the PR with the evidence.</blockquote>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section paper-alt" id="faq" aria-labelledby="faq-title">
+      <div class="container faq-wrap">
+        <div>
+          <p class="kicker">FAQ</p>
+          <h2 class="section-title" id="faq-title">Questions</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Does Jade change my back end?</summary>
+            <p>Only when the back end is part of the request. Infrastructure, permissions, shared databases and deploys always need an explicit request.</p>
+          </details>
+          <details>
+            <summary>What if the OpenSpec CLI is not installed?</summary>
+            <p>Jade asks you once to install it. Meanwhile she writes the change artifacts by hand in the same folder structure and marks <code>openspec validate</code> as NOT RUN.</p>
+          </details>
+          <details>
+            <summary>Will it overwrite my CLAUDE.md, AGENTS.md or .mcp.json?</summary>
+            <p>No. The installer reports conflicts before writing. With <code>--replace</code> it keeps a backup of every file it changes.</p>
+          </details>
+          <details>
+            <summary>What happens without Figma access?</summary>
+            <p>The visual step is marked BLOCKED. Jade does not recreate a screen from memory. Work that does not depend on the design can continue.</p>
+          </details>
+          <details>
+            <summary>Are the community skills trusted?</summary>
+            <p>Each one is pinned to an exact commit and checked by name. The installer never runs third-party scripts. Pinning gives traceability; it is not a security audit.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-word" aria-hidden="true">JADE</p>
+      <div class="footer-meta">
+        <p>Senior full-stack engineer agent · v3.0.0</p>
+        <ul>
+          <li><a href="https://github.com/julianoalvescode/jade-agent">GitHub</a></li>
+          <li><a href="https://github.com/julianoalvescode/jade-agent/blob/main/README.md">README</a></li>
+          <li><a href="https://github.com/julianoalvescode/jade-agent/blob/main/docs/connectors.md">Connectors</a></li>
+          <li><a href="https://github.com/Fission-AI/OpenSpec">OpenSpec</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
