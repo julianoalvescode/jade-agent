@@ -8,7 +8,7 @@
   <meta property="og:title" content="Jade — Senior full-stack engineer agent">
   <meta property="og:description" content="Hand Jade a ticket, a Figma screen or a full-stack feature. She plans it in OpenSpec, builds it and proves it.">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#5b4b9a">
+  <meta name="theme-color" content="#141318">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,9 +67,9 @@
             <p class="demo-repo">acme-storefront</p>
             <p class="msg msg-user">Customers get charged twice when they double-click Pay. Fix it.</p>
             <ol class="steps-log">
-              <li><span class="log-tag">openspec</span> Created change <code>fix-double-charge</code> with proposal, spec and 4 tasks.</li>
-              <li><span class="log-tag">debug</span> Root cause: <code>createCharge()</code> makes a new idempotency key per click, not per checkout.</li>
-              <li><span class="log-tag">fix</span> Key per checkout session. Pay button disabled while a charge is in flight.</li>
+              <li><span class="log-tag">openspec</span><span class="log-text">Created change <code>fix-double-charge</code> with proposal, spec and 4 tasks.</span></li>
+              <li><span class="log-tag">debug</span><span class="log-text">Root cause: <code>createCharge()</code> makes a new idempotency key per click, not per checkout.</span></li>
+              <li><span class="log-tag">fix</span><span class="log-text">Key per checkout session. Pay button disabled while a charge is in flight.</span></li>
             </ol>
             <pre class="diff" aria-label="Diff"><code><span class="d-file">src/checkout/createCharge.ts</span>
 <span class="d-del">- const key = crypto.randomUUID()</span>
@@ -85,9 +85,9 @@
             <p class="demo-repo">acme-dashboard</p>
             <p class="msg msg-user">Implement this Figma screen: figma.com/design/…?node-id=12-345</p>
             <ol class="steps-log">
-              <li><span class="log-tag">openspec</span> Change <code>add-billing-page</code>: spec covers loading, empty and error states.</li>
-              <li><span class="log-tag">recon</span> Reused <code>Card</code>, <code>Table</code> and <code>Button</code>. No new primitives.</li>
-              <li><span class="log-tag">grid</span> Figma gap of 18 px flagged as off-grid. Used 16 px.</li>
+              <li><span class="log-tag">openspec</span><span class="log-text">Change <code>add-billing-page</code>: spec covers loading, empty and error states.</span></li>
+              <li><span class="log-tag">recon</span><span class="log-text">Reused <code>Card</code>, <code>Table</code> and <code>Button</code>. No new primitives.</span></li>
+              <li><span class="log-tag">grid</span><span class="log-text">Figma gap of 18 px flagged as off-grid. Used 16 px.</span></li>
             </ol>
             <pre class="diff" aria-label="Diff"><code><span class="d-file">src/pages/Billing.tsx</span>
 <span class="d-add">+ &lt;Card padding="lg"&gt;</span>
@@ -104,9 +104,9 @@
             <p class="demo-repo">acme-api + acme-web</p>
             <p class="msg msg-user">Add an orders list with filters to the account page.</p>
             <ol class="steps-log">
-              <li><span class="log-tag">openspec</span> Change <code>add-orders-list</code>: contract in design, tasks for API, UI and tests.</li>
-              <li><span class="log-tag">api</span> <code>GET /orders</code> with cursor pagination, filter allowlist and an index on <code>(user_id, created_at)</code>.</li>
-              <li><span class="log-tag">security</span> Orders scoped to the signed-in user. Another user’s token gets 404.</li>
+              <li><span class="log-tag">openspec</span><span class="log-text">Change <code>add-orders-list</code>: contract in design, tasks for API, UI and tests.</span></li>
+              <li><span class="log-tag">api</span><span class="log-text"><code>GET /orders</code> with cursor pagination, filter allowlist and an index on <code>(user_id, created_at)</code>.</span></li>
+              <li><span class="log-tag">security</span><span class="log-text">Orders scoped to the signed-in user. Another user’s token gets 404.</span></li>
             </ol>
             <pre class="diff" aria-label="Diff"><code><span class="d-file">api/orders/repository.ts</span>
 <span class="d-del">- where: { id }</span>
