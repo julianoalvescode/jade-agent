@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jade — Senior full-stack engineer agent</title>
   <meta name="description" content="Jade is a senior full-stack engineer agent for Claude Code and other AI coding tools. Quality, scalability, security, performance and UI/UX, always spec-driven with OpenSpec.">
   <meta property="og:title" content="Jade — Senior full-stack engineer agent">
-  <meta property="og:description" content="One agent, many skills, always with OpenSpec. Evidence criterion by criterion.">
+  <meta property="og:description" content="Hand Jade a ticket, a Figma screen or a full-stack feature. She plans it in OpenSpec, builds it and proves it.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#2f5d57">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,123 +14,200 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" data-header>
     <nav class="container nav" aria-label="Main">
-      <a class="brand" href="#top" aria-label="Jade home">
-        <span class="brand-mark" aria-hidden="true">◆</span> JADE
+      <a class="brand" href="#top" aria-label="Jade home" translate="no">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true"><path d="M16 4l12 12-12 12L4 16z" fill="currentColor"/></svg>
+        Jade
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-nav-toggle>
         <span class="sr-only">Menu</span>
-        <span aria-hidden="true">☰</span>
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
       <ul class="nav-links" id="nav-links" data-nav-links>
-        <li><a href="#pillars">Pillars</a></li>
+        <li><a href="#jobs">What she does</a></li>
         <li><a href="#openspec">OpenSpec</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#install">Install</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a class="nav-cta" href="https://github.com/julianoalvescode/jade-agent">GitHub ↗</a></li>
+        <li><a class="nav-cta" href="https://github.com/julianoalvescode/jade-agent">GitHub</a></li>
       </ul>
     </nav>
   </header>
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="container hero-inner">
-        <p class="eyebrow">v3.0.0 · Claude Code · Codex · Cursor · Copilot · Windsurf · Gemini CLI · Cline</p>
-        <h1 class="hero-title" id="hero-title">The engineer<br>that ships<br>with evidence</h1>
-        <p class="hero-lead">Jade is a senior full-stack engineer agent. She investigates before editing, reuses what your project already has, runs every change through OpenSpec and never says “done” without proof.</p>
-        <div class="hero-actions">
-          <a class="btn btn-accent" href="#install">Get started</a>
-          <a class="btn btn-ghost" href="https://github.com/julianoalvescode/jade-agent">View on GitHub</a>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 class="hero-title" id="hero-title">The engineer that ships with evidence</h1>
+          <p class="hero-lead">Hand Jade a ticket, a Figma screen or a full-stack feature. She plans it in OpenSpec, builds it with your project’s own patterns and shows proof for every criterion.</p>
+          <div class="hero-actions">
+            <a class="btn btn-accent" href="#install">Install Jade</a>
+            <a class="btn btn-ghost" href="https://github.com/julianoalvescode/jade-agent">View the source</a>
+          </div>
+          <p class="hero-meta">Works in Claude Code, Codex, Cursor, Copilot, Windsurf, Gemini CLI and Cline.</p>
         </div>
-        <div class="terminal" role="group" aria-label="Install command">
-          <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-          <pre><code><span class="prompt">$</span> bash jade-agent/scripts/install-skills.sh claude-code --project .
-<span class="muted">✓ 8 Jade skills · 21 community skills · agent “jade”</span>
-<span class="prompt">$</span> openspec init
-<span class="muted">✓ /opsx:propose · /opsx:apply · /opsx:archive</span></code></pre>
+
+        <div class="demo" data-demo>
+          <div class="demo-bar">
+            <span class="demo-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <div class="demo-tabs" role="tablist" aria-label="Example sessions">
+              <button class="demo-tab" type="button" role="tab" id="tab-bug" aria-controls="panel-bug" aria-selected="true">Bug fix</button>
+              <button class="demo-tab" type="button" role="tab" id="tab-figma" aria-controls="panel-figma" aria-selected="false" tabindex="-1">Figma screen</button>
+              <button class="demo-tab" type="button" role="tab" id="tab-api" aria-controls="panel-api" aria-selected="false" tabindex="-1">Full-stack</button>
+            </div>
+          </div>
+
+          <div class="demo-panel" role="tabpanel" id="panel-bug" aria-labelledby="tab-bug" tabindex="0">
+            <p class="demo-repo">acme-storefront</p>
+            <p class="msg msg-user">Customers get charged twice when they double-click Pay. Fix it.</p>
+            <ol class="steps-log">
+              <li><span class="log-tag">openspec</span> Created change <code>fix-double-charge</code> with proposal, spec and 4 tasks.</li>
+              <li><span class="log-tag">debug</span> Root cause: <code>createCharge()</code> makes a new idempotency key per click, not per checkout.</li>
+              <li><span class="log-tag">fix</span> Key per checkout session. Pay button disabled while a charge is in flight.</li>
+            </ol>
+            <pre class="diff" aria-label="Diff"><code><span class="d-file">src/checkout/createCharge.ts</span>
+<span class="d-del">- const key = crypto.randomUUID()</span>
+<span class="d-add">+ const key = session.idempotencyKey</span></code></pre>
+            <ul class="gate" aria-label="Quality gate">
+              <li><span class="st st-pass">PASS</span> Double click creates one charge (test)</li>
+              <li><span class="st st-pass">PASS</span> Button shows loading and blocks resubmit</li>
+              <li><span class="st st-notrun">NOT RUN</span> Payment sandbox: no credentials here</li>
+            </ul>
+          </div>
+
+          <div class="demo-panel" role="tabpanel" id="panel-figma" aria-labelledby="tab-figma" tabindex="0" hidden>
+            <p class="demo-repo">acme-dashboard</p>
+            <p class="msg msg-user">Implement this Figma screen: figma.com/design/…?node-id=12-345</p>
+            <ol class="steps-log">
+              <li><span class="log-tag">openspec</span> Change <code>add-billing-page</code>: spec covers loading, empty and error states.</li>
+              <li><span class="log-tag">recon</span> Reused <code>Card</code>, <code>Table</code> and <code>Button</code>. No new primitives.</li>
+              <li><span class="log-tag">grid</span> Figma gap of 18 px flagged as off-grid. Used 16 px.</li>
+            </ol>
+            <pre class="diff" aria-label="Diff"><code><span class="d-file">src/pages/Billing.tsx</span>
+<span class="d-add">+ &lt;Card padding="lg"&gt;</span>
+<span class="d-add">+   &lt;Table rows={invoices} empty={&lt;EmptyInvoices /&gt;} /&gt;</span>
+<span class="d-add">+ &lt;/Card&gt;</span></code></pre>
+            <ul class="gate" aria-label="Quality gate">
+              <li><span class="st st-pass">PASS</span> Matches node 12-345 at 1440 and 375 px</li>
+              <li><span class="st st-pass">PASS</span> Keyboard, focus and contrast</li>
+              <li><span class="st st-pass">PASS</span> Zero unresolved off-grid spacing</li>
+            </ul>
+          </div>
+
+          <div class="demo-panel" role="tabpanel" id="panel-api" aria-labelledby="tab-api" tabindex="0" hidden>
+            <p class="demo-repo">acme-api + acme-web</p>
+            <p class="msg msg-user">Add an orders list with filters to the account page.</p>
+            <ol class="steps-log">
+              <li><span class="log-tag">openspec</span> Change <code>add-orders-list</code>: contract in design, tasks for API, UI and tests.</li>
+              <li><span class="log-tag">api</span> <code>GET /orders</code> with cursor pagination, filter allowlist and an index on <code>(user_id, created_at)</code>.</li>
+              <li><span class="log-tag">security</span> Orders scoped to the signed-in user. Another user’s token gets 404.</li>
+            </ol>
+            <pre class="diff" aria-label="Diff"><code><span class="d-file">api/orders/repository.ts</span>
+<span class="d-del">- where: { id }</span>
+<span class="d-add">+ where: { id, userId: session.userId }</span></code></pre>
+            <ul class="gate" aria-label="Quality gate">
+              <li><span class="st st-pass">PASS</span> BOLA test with a second user</li>
+              <li><span class="st st-pass">PASS</span> One query per page, no N+1</li>
+              <li><span class="st st-pass">PASS</span> Front-end types match the OpenAPI schema</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section paper" id="pillars" aria-labelledby="pillars-title">
+    <section class="section" id="jobs" aria-labelledby="jobs-title">
       <div class="container">
-        <p class="kicker">Features</p>
-        <h2 class="section-title" id="pillars-title">Five pillars.<br>Every change.</h2>
-        <p class="section-lead">Each change is checked against the same five pillars, scaled to its risk. When they conflict: security, correctness, accessibility, performance, then taste.</p>
-        <ol class="cards">
-          <li class="card">
-            <span class="card-num">#1 Build</span>
-            <h3>Quality</h3>
-            <p>Readable, typed code. Tests that check behavior, not internals. A code review before every delivery.</p>
-          </li>
-          <li class="card">
-            <span class="card-num">#2 Grow</span>
-            <h3>Scalability</h3>
-            <p>No fragile local state. Pagination, limits, idempotent writes, queues and cache with a clear invalidation rule.</p>
-          </li>
-          <li class="card">
-            <span class="card-num">#3 Guard</span>
-            <h3>Security</h3>
-            <p>Validation and authorization on the server. OWASP checks at every changed boundary: BOLA/IDOR, XSS, injection, SSRF, secrets.</p>
-          </li>
-          <li class="card">
-            <span class="card-num">#4 Speed</span>
-            <h3>Performance</h3>
-            <p>Measure before optimizing. Web Vitals on the front end. No N+1, missing indexes or heavy work inside a request.</p>
-          </li>
-          <li class="card">
-            <span class="card-num">#5 Craft</span>
-            <h3>UI/UX</h3>
-            <p>Design-system reuse, a strict 8-point grid, loading/empty/error states and WCAG 2.2 AA accessibility.</p>
-          </li>
-          <li class="card card-accent">
-            <span class="card-num">#6 Spec</span>
-            <h3>OpenSpec, always</h3>
-            <p>Every invocation runs inside OpenSpec. The spec says what to build. Jade’s skills decide how.</p>
-          </li>
-        </ol>
+        <h2 class="section-title" id="jobs-title">What Jade can take on</h2>
+        <p class="section-lead">From a one-line bug to a feature that spans the API and the UI. She asks only when a choice changes the contract, the data or the security.</p>
+        <div class="jobs">
+          <article class="job">
+            <h3>Ticket to pull request</h3>
+            <p>Reads the Jira ticket and linked Confluence pages, checks the back-end contract, builds it and opens the PR with evidence.</p>
+            <p class="job-prompt">“Implement PROJ-123 and prepare the PR.”</p>
+          </article>
+          <article class="job">
+            <h3>Figma to code</h3>
+            <p>Reads one node, maps it to the components you already have and keeps the 8-point grid. No screen recreated from memory.</p>
+            <p class="job-prompt">“Build this frame with our design system.”</p>
+          </article>
+          <article class="job">
+            <h3>Full-stack features</h3>
+            <p>Designs the endpoint and the screen together: pagination, authorization per resource, indexes and matching types on both sides.</p>
+            <p class="job-prompt">“Add an orders list with filters, API and UI.”</p>
+          </article>
+          <article class="job">
+            <h3>Reviews and audits</h3>
+            <p>Reviews a diff for correctness, OWASP risks, performance and accessibility, with findings by file and line.</p>
+            <p class="job-prompt">“Review this PR for security and performance.”</p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section blue" id="openspec" aria-labelledby="openspec-title">
+    <section class="section mist" id="pillars" aria-labelledby="pillars-title">
       <div class="container">
-        <p class="kicker kicker-accent">Spec-driven</p>
-        <h2 class="section-title" id="openspec-title">Agree first.<br>Then build.</h2>
-        <p class="section-lead">Questions use <code>explore</code>. Any code change, even a small fix, gets an OpenSpec change. A task is ticked only when its evidence exists.</p>
+        <h2 class="section-title" id="pillars-title">Five pillars on every change</h2>
+        <p class="section-lead">Checked in proportion to risk. When they conflict, the order is security, correctness, accessibility, performance, then taste.</p>
+        <div class="pillars" role="table" aria-label="Pillars by side">
+          <div class="pillar-row pillar-head" role="row">
+            <span role="columnheader">Pillar</span><span role="columnheader">Front end</span><span role="columnheader">Back end</span>
+          </div>
+          <div class="pillar-row" role="row">
+            <h3 role="rowheader">Quality</h3><p role="cell">Strict TypeScript, tests on behavior, code review.</p><p role="cell">Project layers, unit and integration tests.</p>
+          </div>
+          <div class="pillar-row" role="row">
+            <h3 role="rowheader">Scalability</h3><p role="cell">Reusable components, pagination, virtualized lists.</p><p role="cell">No local state, idempotent writes, queues, cache, limits.</p>
+          </div>
+          <div class="pillar-row" role="row">
+            <h3 role="rowheader">Security</h3><p role="cell">XSS, token storage, CSP, client-side OWASP.</p><p role="cell">BOLA/IDOR, mass assignment, injection, SSRF, secrets.</p>
+          </div>
+          <div class="pillar-row" role="row">
+            <h3 role="rowheader">Performance</h3><p role="cell">LCP, INP, CLS, bundle size, no waterfalls.</p><p role="cell">No N+1, indexes, <code>EXPLAIN</code>, timeouts, pool size.</p>
+          </div>
+          <div class="pillar-row" role="row">
+            <h3 role="rowheader">UI/UX</h3><p role="cell">Design system, 8-point grid, every state, WCAG 2.2 AA.</p><p role="cell">Clear errors and correct HTTP status codes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section jade" id="openspec" aria-labelledby="openspec-title">
+      <div class="container">
+        <h2 class="section-title" id="openspec-title">Agree first, then build</h2>
+        <p class="section-lead">Every Jade run happens inside OpenSpec. Questions stay in explore. Any code change, even a small fix, gets a change, and a task is ticked only when its evidence exists.</p>
         <ol class="flow">
           <li><span class="flow-step">01</span><h3>Explore</h3><p>Reads the repo and weighs options on the five pillars. No code.</p></li>
-          <li><span class="flow-step">02</span><h3>Propose</h3><p>Writes proposal, delta specs, design (one line per pillar) and tasks.</p></li>
-          <li><span class="flow-step">03</span><h3>Apply</h3><p>Builds task by task with the right skills: front end, back end, Figma, contract.</p></li>
+          <li><span class="flow-step">02</span><h3>Propose</h3><p>Proposal, delta specs, design with one line per pillar, and tasks.</p></li>
+          <li><span class="flow-step">03</span><h3>Apply</h3><p>Builds task by task with the right skills for front end, back end, Figma and contract.</p></li>
           <li><span class="flow-step">04</span><h3>Verify</h3><p>Runs the quality gate against every requirement and scenario.</p></li>
-          <li><span class="flow-step">05</span><h3>Archive</h3><p>Only when the gate is READY and you agree. Specs absorb what shipped.</p></li>
+          <li><span class="flow-step">05</span><h3>Archive</h3><p>Only when the gate says READY and you agree. Specs keep what shipped.</p></li>
         </ol>
       </div>
     </section>
 
-    <section class="section paper" id="skills" aria-labelledby="skills-title">
+    <section class="section" id="skills" aria-labelledby="skills-title">
       <div class="container">
-        <p class="kicker">One agent, many skills</p>
-        <h2 class="section-title" id="skills-title">Loaded only<br>when needed.</h2>
-        <p class="section-lead">The agent preloads two skills. The rest load at the step that uses them, so context stays small.</p>
+        <h2 class="section-title" id="skills-title">One agent, loaded only when needed</h2>
+        <p class="section-lead">Two skills are always on. The rest load at the step that uses them, so the context stays small.</p>
         <div class="table-wrap">
           <table class="skills">
             <thead>
-              <tr><th scope="col">Skill</th><th scope="col">Role</th><th scope="col">Loads</th></tr>
+              <tr><th scope="col">Skill</th><th scope="col">Role</th><th scope="col">Loads when</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>jade-workflow</code></td><td>Operating core: pillars, routing and evidence-backed delivery.</td><td><span class="tag tag-accent">Always</span></td></tr>
-              <tr><td><code>jade-openspec</code></td><td>OpenSpec phases mapped to Jade’s skills and evidence.</td><td><span class="tag tag-accent">Always</span></td></tr>
-              <tr><td><code>jade-frontend</code></td><td>UI recon, reuse-first, 8-point grid, web performance and UX.</td><td><span class="tag">UI code</span></td></tr>
-              <tr><td><code>jade-backend</code></td><td>API, data and migrations, scalability, OWASP API security, observability.</td><td><span class="tag">Server code</span></td></tr>
-              <tr><td><code>jade-figma-to-code</code></td><td>Figma node → production code with three-level token economy.</td><td><span class="tag">Figma URL</span></td></tr>
-              <tr><td><code>jade-backend-contract</code></td><td>Checks endpoint, request, response and types against the back end.</td><td><span class="tag">API boundary</span></td></tr>
-              <tr><td><code>jade-delivery</code></td><td>Jira, Confluence, GitHub and cross-repo work without duplicates.</td><td><span class="tag">Tickets &amp; PRs</span></td></tr>
+              <tr><td><code>jade-workflow</code></td><td>Operating core: pillars, routing and evidence-backed delivery.</td><td><span class="tag tag-on">Always</span></td></tr>
+              <tr><td><code>jade-openspec</code></td><td>OpenSpec phases mapped to Jade’s skills and evidence.</td><td><span class="tag tag-on">Always</span></td></tr>
+              <tr><td><code>jade-frontend</code></td><td>UI recon, reuse-first, 8-point grid, web performance and UX.</td><td><span class="tag">UI code changes</span></td></tr>
+              <tr><td><code>jade-backend</code></td><td>API, data and migrations, scalability, API security, observability.</td><td><span class="tag">Server code changes</span></td></tr>
+              <tr><td><code>jade-figma-to-code</code></td><td>Figma node to production code with three-level token economy.</td><td><span class="tag">A Figma URL is given</span></td></tr>
+              <tr><td><code>jade-backend-contract</code></td><td>Checks endpoint, request, response and types against the back end.</td><td><span class="tag">An API is touched</span></td></tr>
+              <tr><td><code>jade-delivery</code></td><td>Jira, Confluence, GitHub and cross-repo work without duplicates.</td><td><span class="tag">Tickets or PRs</span></td></tr>
               <tr><td><code>frontend-quality-gate</code></td><td>Full-stack readiness by evidence: PASS, FAIL, BLOCKED, NOT RUN, N/A.</td><td><span class="tag">Code changed</span></td></tr>
             </tbody>
           </table>
@@ -139,33 +216,54 @@
       </div>
     </section>
 
-    <section class="section paper-alt" id="evidence" aria-labelledby="evidence-title">
+    <section class="section mist" id="surfaces" aria-labelledby="surfaces-title">
+      <div class="container surfaces">
+        <div>
+          <h2 class="section-title" id="surfaces-title">Works where you code</h2>
+          <p class="section-lead">Jade is a set of plain Markdown skills. The installer writes them where your client looks for skills.</p>
+        </div>
+        <div class="surface-lists">
+          <div>
+            <h3>AI clients</h3>
+            <ul class="chips" translate="no">
+              <li>Claude Code</li><li>Codex</li><li>Cursor</li><li>GitHub Copilot</li><li>Windsurf</li><li>Gemini CLI</li><li>Cline</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Connectors</h3>
+            <ul class="chips" translate="no">
+              <li>Jira</li><li>Confluence</li><li>GitHub</li><li>Figma</li><li>OpenSpec</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="evidence" aria-labelledby="evidence-title">
       <div class="container split">
         <div>
-          <p class="kicker">Delivery</p>
-          <h2 class="section-title" id="evidence-title">No proof,<br>no “done”.</h2>
-          <p class="section-lead">Every task ends with a matrix: criterion → implementation → evidence → state. Jade keeps code written, validated, PR open, merged and deployed apart.</p>
+          <h2 class="section-title" id="evidence-title">No proof, no “done”</h2>
+          <p class="section-lead">Every task ends with a matrix: criterion, implementation, evidence and state. Written, validated, PR open, merged and deployed are never mixed up.</p>
         </div>
         <ul class="states" aria-label="Evidence states">
-          <li><span class="state state-pass">PASS</span> Checked, with concrete evidence.</li>
-          <li><span class="state state-fail">FAIL</span> Checked, and the requirement broke.</li>
-          <li><span class="state state-blocked">BLOCKED</span> Access, data or a decision is missing.</li>
-          <li><span class="state state-notrun">NOT RUN</span> Relevant, not run. Reason and risk stated.</li>
-          <li><span class="state state-na">N/A</span> The change does not touch it.</li>
+          <li><span class="st st-pass">PASS</span> Checked, with concrete evidence.</li>
+          <li><span class="st st-fail">FAIL</span> Checked, and the requirement broke.</li>
+          <li><span class="st st-blocked">BLOCKED</span> Access, data or a decision is missing.</li>
+          <li><span class="st st-notrun">NOT RUN</span> Relevant but not run. Reason and risk stated.</li>
+          <li><span class="st st-notrun">N/A</span> The change does not touch it.</li>
         </ul>
       </div>
     </section>
 
-    <section class="section paper" id="install" aria-labelledby="install-title">
+    <section class="section mist" id="install" aria-labelledby="install-title">
       <div class="container">
-        <p class="kicker">Install</p>
-        <h2 class="section-title" id="install-title">Two minutes<br>to start.</h2>
+        <h2 class="section-title" id="install-title">Set up in four steps</h2>
         <p class="section-lead">Needs Python 3.10+ and Git. Node is only needed for the OpenSpec CLI.</p>
-        <ol class="steps">
+        <ol class="install">
           <li>
             <h3>Install Jade into your project</h3>
             <div class="code">
-              <button class="copy" type="button" data-copy>Copy</button>
+              <button class="copy" type="button" aria-live="polite" data-copy>Copy</button>
 <pre><code>git clone https://github.com/julianoalvescode/jade-agent.git
 bash jade-agent/scripts/install-skills.sh claude-code --project /path/to/project</code></pre>
             </div>
@@ -174,7 +272,7 @@ bash jade-agent/scripts/install-skills.sh claude-code --project /path/to/project
           <li>
             <h3>Set up OpenSpec</h3>
             <div class="code">
-              <button class="copy" type="button" data-copy>Copy</button>
+              <button class="copy" type="button" aria-live="polite" data-copy>Copy</button>
 <pre><code>npm install -g @fission-ai/openspec@latest
 cd /path/to/project &amp;&amp; openspec init</code></pre>
             </div>
@@ -182,7 +280,7 @@ cd /path/to/project &amp;&amp; openspec init</code></pre>
           <li>
             <h3>Connect your tools</h3>
             <div class="code">
-              <button class="copy" type="button" data-copy>Copy</button>
+              <button class="copy" type="button" aria-live="polite" data-copy>Copy</button>
 <pre><code>claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp
 claude mcp add --transport http figma https://mcp.figma.com/mcp</code></pre>
             </div>
@@ -196,20 +294,21 @@ claude mcp add --transport http figma https://mcp.figma.com/mcp</code></pre>
       </div>
     </section>
 
-    <section class="section paper-alt" id="faq" aria-labelledby="faq-title">
+    <section class="section" id="faq" aria-labelledby="faq-title">
       <div class="container faq-wrap">
-        <div>
-          <p class="kicker">FAQ</p>
-          <h2 class="section-title" id="faq-title">Questions</h2>
-        </div>
+        <h2 class="section-title" id="faq-title">Questions</h2>
         <div class="faq">
           <details>
+            <summary>Is Jade safe to run on my repo?</summary>
+            <p>She does not open <code>.env</code> or print secrets. She asks before writing to Jira, Confluence or GitHub, never force pushes and never skips required checks. Infrastructure, permissions and deploys need an explicit request.</p>
+          </details>
+          <details>
             <summary>Does Jade change my back end?</summary>
-            <p>Only when the back end is part of the request. Infrastructure, permissions, shared databases and deploys always need an explicit request.</p>
+            <p>Only when the back end is part of the request. Otherwise she checks the contract and records the dependency.</p>
           </details>
           <details>
             <summary>What if the OpenSpec CLI is not installed?</summary>
-            <p>Jade asks you once to install it. Meanwhile she writes the change artifacts by hand in the same folder structure and marks <code>openspec validate</code> as NOT RUN.</p>
+            <p>Jade asks you once to install it. Meanwhile she writes the change files by hand in the same structure and marks <code>openspec validate</code> as NOT RUN.</p>
           </details>
           <details>
             <summary>Will it overwrite my CLAUDE.md, AGENTS.md or .mcp.json?</summary>
@@ -226,13 +325,20 @@ claude mcp add --transport http figma https://mcp.figma.com/mcp</code></pre>
         </div>
       </div>
     </section>
+
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="container cta-inner">
+        <h2 class="cta-title" id="cta-title">Give Jade your next ticket</h2>
+        <a class="btn btn-accent" href="#install">Install Jade</a>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <p class="footer-word" aria-hidden="true">JADE</p>
+    <div class="container">
+      <p class="footer-word" aria-hidden="true">Jade</p>
       <div class="footer-meta">
-        <p>Senior full-stack engineer agent · v3.0.0</p>
+        <p>Senior full-stack engineer agent, version 3.0.0</p>
         <ul>
           <li><a href="https://github.com/julianoalvescode/jade-agent">GitHub</a></li>
           <li><a href="https://github.com/julianoalvescode/jade-agent/blob/main/README.md">README</a></li>
