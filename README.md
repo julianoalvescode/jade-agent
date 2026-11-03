@@ -11,6 +11,8 @@ OpenSpec, and evidence criterion by criterion.
 
 <sub>Version 3.0.0 · Claude Code · Codex · Cursor · Copilot · Windsurf · Gemini CLI · Cline</sub>
 
+**[Documentation site →](https://julianoalvescode.github.io/jade-agent/)**
+
 </div>
 
 ---
