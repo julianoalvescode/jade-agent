@@ -13,6 +13,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 import install as jade
 
+LOCAL_SKILLS = 8
+
+
+def read(relative):
+    return (ROOT / relative).read_text(encoding='utf-8')
+
+
 class InstallerTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -26,7 +33,7 @@ class InstallerTests(unittest.TestCase):
     def test_core_install_preserves_project_instructions(self):
         (self.project / 'AGENTS.md').write_text('existing rules')
         result = jade.install(self.project, core_only=True)
-        self.assertEqual(result['skills'], 6)
+        self.assertEqual(result['skills'], LOCAL_SKILLS)
         self.assertEqual((self.project / 'AGENTS.md').read_text(), 'existing rules')
         self.assertFalse((self.project / '.mcp.json').exists())
         self.assertTrue((self.project / '.claude/skills/jade-delivery/SKILL.md').is_file())
@@ -41,7 +48,7 @@ class InstallerTests(unittest.TestCase):
         agent = self.project / '.claude/agents/jade.md'
         agent.parent.mkdir(parents=True)
         agent.write_text('custom agent')
-        with self.assertRaisesRegex(ValueError, 'existente diferente'):
+        with self.assertRaisesRegex(ValueError, 'Existing file differs'):
             jade.install(self.project, core_only=True)
         self.assertEqual(agent.read_text(), 'custom agent')
         self.assertFalse((self.project / '.claude/skills').exists())
@@ -55,8 +62,11 @@ class InstallerTests(unittest.TestCase):
 
     def test_symlink_destination_rejected(self):
         outside = self.base / 'outside'; outside.mkdir()
-        (self.project / '.claude').symlink_to(outside, target_is_directory=True)
-        with self.assertRaisesRegex(ValueError, 'simbólico'):
+        try:
+            (self.project / '.claude').symlink_to(outside, target_is_directory=True)
+        except OSError as error:
+            self.skipTest('symlinks unavailable on this host: ' + str(error))
+        with self.assertRaisesRegex(ValueError, 'symbolic'):
             jade.install(self.project, core_only=True)
         self.assertEqual(list(outside.iterdir()), [])
 
@@ -94,7 +104,7 @@ class InstallerTests(unittest.TestCase):
         manifest = jade.load_manifest()
         manifest['sources'][0]['revision'] = 'main'
         (root / 'skills-lock.json').write_text(json.dumps(manifest))
-        with self.assertRaisesRegex(ValueError, 'imutável'):
+        with self.assertRaisesRegex(ValueError, 'immutable'):
             jade.load_manifest(root)
 
     def test_duplicate_name_rejected(self):
@@ -102,7 +112,7 @@ class InstallerTests(unittest.TestCase):
         manifest = jade.load_manifest()
         manifest['localSkills'].append(manifest['localSkills'][0])
         (root / 'skills-lock.json').write_text(json.dumps(manifest))
-        with self.assertRaisesRegex(ValueError, 'duplicados'):
+        with self.assertRaisesRegex(ValueError, 'duplicate'):
             jade.load_manifest(root)
 
     def test_invalid_agent_cli_rejected(self):
@@ -112,11 +122,11 @@ class InstallerTests(unittest.TestCase):
 
 
 class FigmaToCodeSkillTests(unittest.TestCase):
-    """Garantias da skill jade-figma-to-code: descoberta, roteamento, MCP e ausência de regressão."""
+    """jade-figma-to-code guarantees: discovery, routing, MCP and no regression."""
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
-        self.project = Path(self.temp.name) / 'projeto figma'
+        self.project = Path(self.temp.name) / 'figma project'
         self.project.mkdir()
 
     def tearDown(self):
@@ -125,7 +135,7 @@ class FigmaToCodeSkillTests(unittest.TestCase):
     def test_skill_is_registered_as_local_core_skill(self):
         manifest = jade.load_manifest()
         self.assertIn('jade-figma-to-code', manifest['localSkills'])
-        # Permanece uma skill local (sem rede); não vira fonte comunitária.
+        # Stays a local skill (no network); never becomes a community source.
         community = {s['name'] for src in manifest['sources'] for s in src['skills']}
         self.assertNotIn('jade-figma-to-code', community)
 
@@ -136,8 +146,7 @@ class FigmaToCodeSkillTests(unittest.TestCase):
 
     def test_core_install_discovers_skill_without_network(self):
         result = jade.install(self.project, core_only=True)
-        # 4 skills originais + a nova coordenadora = 5 skills próprias.
-        self.assertEqual(result['skills'], 6)
+        self.assertEqual(result['skills'], LOCAL_SKILLS)
         installed = self.project / '.claude/skills/jade-figma-to-code/SKILL.md'
         self.assertTrue(installed.is_file())
 
@@ -147,67 +156,67 @@ class FigmaToCodeSkillTests(unittest.TestCase):
             self.assertTrue((self.project / '.claude/skills' / name / 'SKILL.md').is_file(), name)
 
     def test_routing_triggers_on_figma_request(self):
-        workflow = (ROOT / 'skills/jade-workflow/SKILL.md').read_text()
+        workflow = read('skills/jade-workflow/SKILL.md')
         self.assertIn('jade-figma-to-code', workflow)
         self.assertIn('Figma', workflow)
-        frontend = (ROOT / 'skills/jade-frontend/SKILL.md').read_text()
+        frontend = read('skills/jade-frontend/SKILL.md')
         self.assertRegex(frontend, r'\|\s*Figma\s*\|.*jade-figma-to-code')
-        engineering = (ROOT / 'skills/jade-frontend/references/engineering.md').read_text()
+        engineering = read('skills/jade-frontend/references/engineering.md')
         self.assertIn('jade-figma-to-code', engineering)
 
     def test_skill_composes_instead_of_duplicating(self):
-        body = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
-        # Compõe as skills oficiais por referência, não reescreve suas instruções.
+        body = read('skills/jade-figma-to-code/SKILL.md')
+        # Composes the official skills by reference; does not rewrite their instructions.
         for ref in ('figma-design-to-code', 'ui-recon', 'spacing-system',
                     'code-review-and-quality', 'frontend-quality-gate'):
             self.assertIn(ref, body)
         self.assertLess(len(body.splitlines()), 500)
 
     def test_token_strategy_documented(self):
-        body = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
-        for marker in ('Nível 1', 'Nível 2', 'Nível 3'):
+        body = read('skills/jade-figma-to-code/SKILL.md')
+        for marker in ('Level 1', 'Level 2', 'Level 3'):
             self.assertIn(marker, body)
 
     def test_mcp_unavailable_path_documented(self):
-        body = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
+        body = read('skills/jade-figma-to-code/SKILL.md')
         self.assertIn('get_design_context', body)
         self.assertIn('BLOCKED', body)
 
     def test_figma_mcp_server_present_in_example(self):
-        mcp = json.loads((ROOT / '.mcp.example.json').read_text())
+        mcp = json.loads(read('.mcp.example.json'))
         self.assertIn('figma', mcp['mcpServers'])
         self.assertEqual(mcp['mcpServers']['figma']['url'], 'https://mcp.figma.com/mcp')
 
     def test_full_activation_rule_present_in_workflow(self):
-        workflow = (ROOT / 'skills/jade-workflow/SKILL.md').read_text()
-        self.assertIn('acionamento pleno', workflow)
-        self.assertIn('nenhuma skill aplicável fica de fora', workflow)
-        # A regra deve chegar às instruções portáveis geradas.
+        workflow = read('skills/jade-workflow/SKILL.md')
+        self.assertIn('full activation', workflow)
+        self.assertIn('no applicable skill is left out', workflow)
+        # The rule must reach the generated portable instructions.
         for name in ('AGENTS.md', 'AGENT-PROMPT.md'):
-            self.assertIn('acionamento pleno', (ROOT / name).read_text(), name)
+            self.assertIn('full activation', read(name), name)
 
 
 class BackendContractSkillTests(unittest.TestCase):
-    """Garantias da skill jade-backend-contract: ativação opcional, descoberta,
-    composição, economia e ausência de regressão."""
+    """jade-backend-contract guarantees: optional activation, discovery,
+    composition, economy and no regression."""
 
-    SKILL = ROOT / 'skills/jade-backend-contract/SKILL.md'
+    SKILL = 'skills/jade-backend-contract/SKILL.md'
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
-        self.project = Path(self.temp.name) / 'projeto contrato'
+        self.project = Path(self.temp.name) / 'contract project'
         self.project.mkdir()
 
     def tearDown(self):
         self.temp.cleanup()
 
     def test_registered_as_local_core_skill(self):
-        manifest = jade.load_manifest()
-        self.assertIn('jade-backend-contract', manifest['localSkills'])
+        self.assertIn('jade-backend-contract', jade.load_manifest()['localSkills'])
 
     def test_frontmatter_name_matches_directory(self):
-        self.assertTrue(self.SKILL.is_file())
-        self.assertEqual(jade.skill_name(self.SKILL), 'jade-backend-contract')
+        path = ROOT / self.SKILL
+        self.assertTrue(path.is_file())
+        self.assertEqual(jade.skill_name(path), 'jade-backend-contract')
 
     def test_contract_first_pinned_in_manifest(self):
         manifest = jade.load_manifest()
@@ -216,12 +225,11 @@ class BackendContractSkillTests(unittest.TestCase):
         src = srcs['https://github.com/affaan-m/ecc']
         names = {sk['name'] for sk in src['skills']}
         self.assertIn('contract-first', names)
-        self.assertRegex(src['revision'], r'^[0-9a-f]{40}$')  # SHA imutável
+        self.assertRegex(src['revision'], r'^[0-9a-f]{40}$')  # immutable SHA
 
     def test_core_install_discovers_skill_without_network(self):
         result = jade.install(self.project, core_only=True)
-        # 5 próprias anteriores + jade-backend-contract = 6.
-        self.assertEqual(result['skills'], 6)
+        self.assertEqual(result['skills'], LOCAL_SKILLS)
         self.assertTrue((self.project / '.claude/skills/jade-backend-contract/SKILL.md').is_file())
 
     def test_no_regression_other_skills_still_install(self):
@@ -231,37 +239,120 @@ class BackendContractSkillTests(unittest.TestCase):
             self.assertTrue((self.project / '.claude/skills' / name / 'SKILL.md').is_file(), name)
 
     def test_lazy_activation_rules_documented(self):
-        body = self.SKILL.read_text()
+        body = read(self.SKILL)
         self.assertIn('lazy', body.lower())
-        # Ativa em API; não ativa em tarefa puramente visual.
-        self.assertRegex(body, r'[Nn]ão ativ')
-        self.assertIn('visuais', body)
+        # Activates on API; does not activate on purely visual tasks.
+        self.assertRegex(body, r'[Dd]o not activate')
+        self.assertIn('visual', body)
         for trigger in ('endpoint', 'DTO', 'Figma', 'Jira'):
             self.assertIn(trigger, body)
 
     def test_composes_contract_first_and_backend_contracts(self):
-        body = self.SKILL.read_text()
+        body = read(self.SKILL)
         self.assertIn('contract-first', body)
         self.assertIn('backend-contracts.md', body)
         self.assertLess(len(body.splitlines()), 500)
 
     def test_backend_unavailable_path_documented(self):
-        body = self.SKILL.read_text()
+        body = read(self.SKILL)
         self.assertIn('BLOCKED', body)
-        self.assertIn('não invente contratos', body)
+        self.assertIn('do not invent contracts', body)
 
     def test_discovery_supports_common_stacks(self):
-        body = self.SKILL.read_text()
+        body = read(self.SKILL)
         for stack in ('Spring', 'NestJS', 'OpenAPI', 'GraphQL'):
             self.assertIn(stack, body)
 
     def test_routing_wired_in_frontend_and_workflow(self):
-        frontend = (ROOT / 'skills/jade-frontend/SKILL.md').read_text()
-        self.assertRegex(frontend, r'\|\s*API\s*\|.*jade-backend-contract')
-        workflow = (ROOT / 'skills/jade-workflow/SKILL.md').read_text()
-        self.assertIn('jade-backend-contract', workflow)
-        figma = (ROOT / 'skills/jade-figma-to-code/SKILL.md').read_text()
-        self.assertIn('jade-backend-contract', figma)
+        self.assertRegex(read('skills/jade-frontend/SKILL.md'), r'\|\s*API\s*\|.*jade-backend-contract')
+        self.assertIn('jade-backend-contract', read('skills/jade-workflow/SKILL.md'))
+        self.assertIn('jade-backend-contract', read('skills/jade-figma-to-code/SKILL.md'))
+
+
+class FullStackSkillTests(unittest.TestCase):
+    """Full-stack profile guarantees: jade-backend skill, pillars and gate."""
+
+    SKILL = ROOT / 'skills/jade-backend/SKILL.md'
+    REF = 'skills/jade-backend/references/engineering.md'
+
+    def test_registered_and_named(self):
+        self.assertIn('jade-backend', jade.load_manifest()['localSkills'])
+        self.assertEqual(jade.skill_name(self.SKILL), 'jade-backend')
+        self.assertTrue((ROOT / self.REF).is_file())
+
+    def test_core_install_includes_backend(self):
+        with tempfile.TemporaryDirectory() as temp:
+            jade.install(Path(temp), core_only=True)
+            self.assertTrue((Path(temp) / '.claude/skills/jade-backend/SKILL.md').is_file())
+
+    def test_backend_covers_pillars(self):
+        body = read(self.REF)
+        for marker in ('Scalability', 'Security', 'Performance', 'BOLA',
+                       'idempotent', 'N+1', 'expand → migrate → contract'):
+            self.assertIn(marker, body)
+
+    def test_workflow_declares_fullstack_pillars(self):
+        workflow = read('skills/jade-workflow/SKILL.md')
+        self.assertIn('senior full-stack engineer', workflow)
+        for pillar in ('Quality', 'Scalability', 'Security', 'Performance', 'UI/UX'):
+            self.assertIn(pillar, workflow)
+        self.assertIn('jade-backend`', workflow)
+        self.assertIn('senior full-stack engineer', read('AGENTS.md'))
+
+    def test_gate_covers_backend(self):
+        gate = read('skills/frontend-quality-gate/SKILL.md')
+        for area in ('Scalability', 'Data', 'Operations', 'UX'):
+            self.assertIn(area, gate)
+
+    def test_frontend_has_performance_and_ux(self):
+        eng = read('skills/jade-frontend/references/engineering.md')
+        for marker in ('Web performance', 'INP', 'WCAG 2.2 AA'):
+            self.assertIn(marker, eng)
+
+
+class OpenSpecSkillTests(unittest.TestCase):
+    """Jade always runs with OpenSpec."""
+
+    SKILL = 'skills/jade-openspec/SKILL.md'
+
+    def test_registered_and_named(self):
+        self.assertIn('jade-openspec', jade.load_manifest()['localSkills'])
+        self.assertEqual(jade.skill_name(ROOT / self.SKILL), 'jade-openspec')
+
+    def test_preloaded_by_agent(self):
+        header = read('.claude/agents/jade.md').split('---', 2)[1]
+        self.assertIn('  - jade-openspec', header)
+
+    def test_workflow_makes_openspec_mandatory(self):
+        workflow = read('skills/jade-workflow/SKILL.md')
+        self.assertIn('Always run with OpenSpec', workflow)
+        self.assertIn('Always run with OpenSpec', read('AGENTS.md'))
+
+    def test_phases_mapped(self):
+        body = read(self.SKILL)
+        for phase in ('explore', 'propose', 'apply', 'verify', 'archive'):
+            self.assertIn(phase, body)
+        for artifact in ('proposal.md', 'design.md', 'tasks.md', 'openspec validate'):
+            self.assertIn(artifact, body)
+
+    def test_missing_cli_does_not_install_silently(self):
+        body = read(self.SKILL)
+        self.assertIn('@fission-ai/openspec', body)
+        self.assertIn('NOT RUN', body)
+
+
+class EnglishOnlyTests(unittest.TestCase):
+    """All Jade skills and generated instructions are written in English."""
+
+    MARKERS = (' não ', ' você ', ' para o ', 'ção ', 'ções ')
+
+    def test_no_portuguese_in_skills_and_instructions(self):
+        files = list((ROOT / 'skills').rglob('*.md')) + [
+            ROOT / 'AGENTS.md', ROOT / 'AGENT-PROMPT.md', ROOT / '.claude/agents/jade.md']
+        for path in files:
+            text = path.read_text(encoding='utf-8')
+            for marker in self.MARKERS:
+                self.assertNotIn(marker, text, str(path))
 
 
 if __name__ == '__main__':

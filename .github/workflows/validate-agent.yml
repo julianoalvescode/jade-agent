@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       full_install:
-        description: Testar instalação completa com fontes externas fixadas
+        description: Test the full installation with pinned external sources
         type: boolean
         default: false
 permissions:

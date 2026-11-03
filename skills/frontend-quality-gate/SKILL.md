@@ -1,42 +1,48 @@
 ---
 name: frontend-quality-gate
-description: Verificar requisitos e prontidão de alterações front-end com evidências de código, contrato, UI, testes e CI. Usar para revisão, preparação de PR, regressão e conclusão de tarefas da Jade.
+description: Verify requirements and readiness of front-end and back-end changes with evidence from code, contract, UI, data, security, performance, tests and CI. Use for review, PR preparation, regression and completion of Jade tasks.
 ---
 
-# Quality gate de front-end
+# Full-stack quality gate
 
-Escolher revisão (leitura), execução (mudanças autorizadas) ou preparação/publicação de PR conforme o pedido. Ler ticket e documentos disponíveis, diff e instruções do repo. Não assumir acesso a sistemas externos.
+The name `frontend-quality-gate` is kept for compatibility; the gate covers front end and back end.
 
-## Estados
+Choose review (read-only), execution (authorized changes) or PR preparation/publication according to the request. Read the ticket and available documents, the diff and the repo instructions. Do not assume access to external systems.
 
-- `PASS`: executado ou inspecionado com evidência concreta correspondente ao critério.
-- `FAIL`: verificação executada e requisito violado.
-- `BLOCKED`: acesso, ambiente, dados ou decisão impede verificação necessária.
-- `NOT RUN`: verificação relevante não executada; explicar motivo e risco.
-- `N/A`: mudança não afeta a verificação; justificar.
+## States
 
-Nunca inferir PASS de ausência de erro. Build não substitui teste funcional. Mock não comprova integração real. Evidência de outro commit não comprova o diff atual.
+- `PASS`: executed or inspected with concrete evidence matching the criterion.
+- `FAIL`: check executed and requirement violated.
+- `BLOCKED`: access, environment, data or a decision prevents a required check.
+- `NOT RUN`: relevant check not executed; explain the reason and the risk.
+- `N/A`: the change does not affect the check; justify it.
 
-## Verificações por impacto
+Never infer PASS from the absence of errors. A build does not replace a functional test. A mock does not prove a real integration. Evidence from another commit does not prove the current diff.
 
-| Área | Evidência adequada |
+## Checks by impact
+
+| Area | Adequate evidence |
 | --- | --- |
-| Requisito | Critério ligado ao comportamento, arquivo e teste/inspeção |
-| Contrato | Schema/código e SHA; payload, erro, auth e ambiente |
-| UI | Componentes/tokens, grade, estados, responsividade e comparação renderizada |
-| Acessibilidade | Teclado, foco, semântica, labels e contraste pertinentes |
-| Testes e código | Comandos reais, saída/exit code e casos afetados |
-| Segurança | Fluxo de dados e controles nas fronteiras alteradas |
-| Performance | Evidência proporcional ao caminho alterado; sem métricas inventadas |
-| CI e entrega | Execução no commit correto, checks/reviews exigidos, conflitos e estado real |
-| Documentação | Decisão ou comportamento alterado refletido quando autorizado |
+| Requirement | Criterion linked to behavior, file and test/inspection |
+| Contract | Schema/code and SHA; payload, error, auth and environment |
+| UI | Components/tokens, grid, states, responsiveness and rendered comparison |
+| Accessibility | Relevant keyboard, focus, semantics, labels and contrast |
+| UX | Loading, empty, error, success, action feedback and clear messages |
+| Tests and code | Real commands, output/exit code and affected cases |
+| Security | Data flow and controls at the changed boundaries; per-resource authz on the server; no secrets/PII in logs or the client |
+| Performance | Evidence proportional to the changed path (Web Vitals, bundle, `EXPLAIN`, query count); no invented metrics |
+| Scalability | Pagination, limits, idempotency, cache with invalidation and no fragile local state |
+| Data | Reversible and compatible migration, constraints, indexes and short transactions |
+| Operations | Structured logs without sensitive data, generic errors to the client and a rollback plan |
+| CI and delivery | Run on the correct commit, required checks/reviews, conflicts and real state |
+| Documentation | Changed decision or behavior reflected when authorized |
 
-Começar por inspeção e testes focados; ampliar conforme risco e gates reais do repo. Não alterar dependências/lockfiles/configuração só para obter verde. Distinguir falha introduzida, preexistente demonstrada e origem desconhecida.
+Start with inspection and focused tests; widen according to risk and the repo's real gates. Do not change dependencies/lockfiles/configuration just to get green. Distinguish introduced failure, demonstrated pre-existing failure and unknown origin.
 
-Após editar código ou receber novo commit, reexecutar verificações afetadas. Para UI, não apresentar inspeção estática como validação em navegador.
+After editing code or receiving a new commit, rerun the affected checks. For UI, do not present static inspection as browser validation.
 
-## Resultado
+## Result
 
-Usar `READY` somente quando critérios/gates necessários estiverem satisfeitos; `READY WITH CAVEATS` para limitações residuais não bloqueantes explicadas; `NOT READY` quando critério/gate necessário falhar ou estiver bloqueado/não validado. Verificação opcional não executada não bloqueia automaticamente uma mudança de baixo risco.
+Use `READY` only when the required criteria/gates are satisfied; `READY WITH CAVEATS` for explained non-blocking residual limitations; `NOT READY` when a required criterion/gate fails or is blocked/not validated. An optional check not executed does not automatically block a low-risk change.
 
-Entregar achados por severidade, localização, impacto e correção, seguidos de matriz `critério → implementação → evidência → estado`. Informar comandos, limitações, QA restante e ações externas realizadas/propostas. Não confundir readiness técnico com autorização de merge ou publicação.
+Deliver findings by severity, location, impact and fix, followed by a `criterion → implementation → evidence → state` matrix. Report commands, limitations, remaining QA and external actions taken/proposed. Do not confuse technical readiness with authorization to merge or publish.

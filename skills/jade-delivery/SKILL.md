@@ -1,38 +1,38 @@
 ---
 name: jade-delivery
-description: Conduzir tarefas de front-end ligadas a Jira, Confluence, GitHub e repositórios back-end. Usar para reunir requisitos, verificar contratos entre repos, preparar PR, acompanhar CI ou atualizar registros autorizados sem duplicação.
+description: Drive tasks tied to Jira, Confluence, GitHub and back-end repositories. Use to gather requirements, check cross-repo contracts, prepare PRs, follow CI or update authorized records without duplication.
 ---
 
-# Entrega integrada
+# Integrated delivery
 
-## 1. Estabelecer acesso e escopo
+## 1. Establish access and scope
 
-Descobrir as ferramentas realmente expostas. Não presumir nomes, schemas, autenticação ou conexão por existir um arquivo de configuração. Preferir conectores/MCP autenticados; para GitHub, usar `gh` autenticado se disponível. Usar Git local para inspecionar os repos autorizados. Registrar bloqueio apenas nas etapas dependentes e avançar no trabalho independente.
+Discover the tools actually exposed. Do not assume names, schemas, authentication or connection just because a configuration file exists. Prefer authenticated connectors/MCP; for GitHub, use authenticated `gh` if available. Use local Git to inspect authorized repos. Record a blocker only for the dependent steps and move on with independent work.
 
-Identificar se o pedido é revisão, execução, preparação de PR ou publicação/merge. Reutilizar autorizações explícitas da sessão; não interpretar uma leitura de ticket como autorização para mudar status ou enviar mensagens.
+Identify whether the request is a review, execution, PR preparation or publication/merge. Reuse explicit session authorizations; do not interpret reading a ticket as authorization to change its status or send messages.
 
-## 2. Montar contexto mínimo
+## 2. Build minimal context
 
-- Jira: ler descrição, critérios, comentários relevantes, QA, dependências e links; confirmar qual ticket é o alvo.
-- Confluence: ler páginas vinculadas e pesquisar pelo domínio apenas quando necessário; registrar versão/data, fonte e trecho relevante.
-- Front-end: mapear fluxo, componentes, client, testes e convenções de PR.
-- Back-end: seguir [backend-contracts.md](references/backend-contracts.md).
-- GitHub: localizar PRs relacionados, base/head, reviews e checks pertinentes.
+- Jira: read description, criteria, relevant comments, QA, dependencies and links; confirm which ticket is the target.
+- Confluence: read linked pages and search the domain only when needed; record version/date, source and relevant excerpt.
+- Front end: map flow, components, client, tests and PR conventions.
+- Back end: follow [backend-contracts.md](references/backend-contracts.md).
+- GitHub: locate related PRs, base/head, reviews and relevant checks.
 
-Usar [delivery-record.md](references/delivery-record.md) como estrutura compacta. Registrar fontes verificáveis e divergências. Resolver diferenças por decisão explícita de produto/engenharia, sem assumir que o documento mais recente ou o código sempre vence. Fazer uma pergunta objetiva apenas quando a divergência bloquear uma escolha material.
+Use [delivery-record.md](references/delivery-record.md) as a compact structure. Record verifiable sources and divergences. Resolve differences through an explicit product/engineering decision, without assuming the newest document or the code always wins. Ask one objective question only when the divergence blocks a material choice.
 
-## 3. Implementar e validar
+## 3. Implement and validate
 
-Relacionar cada critério ao fluxo afetado, à implementação e à evidência. Manter dependência de API separada de mock autorizado. Carregar `jade-frontend` e `frontend-quality-gate` conforme o escopo. Nunca marcar um critério funcional como aprovado apenas porque lint ou build passou.
+Link each criterion to the affected flow, the implementation and the evidence. Keep API dependencies separate from authorized mocks. Load `jade-frontend`, `jade-backend` and `frontend-quality-gate` according to scope. Never mark a functional criterion as approved just because lint or build passed.
 
-## 4. Preparar ou publicar
+## 4. Prepare or publish
 
-Seguir [external-updates.md](references/external-updates.md) para branch, PR, Jira e Confluence. Antes de escrita autorizada, reler o registro e verificar se o resultado já existe. Se houver timeout, consultar o estado antes de repetir a operação.
+Follow [external-updates.md](references/external-updates.md) for branch, PR, Jira and Confluence. Before an authorized write, reread the record and check whether the result already exists. On a timeout, check the state before repeating the operation.
 
-Preparar o conteúdo e as evidências antes de solicitar qualquer autorização realmente ausente. Não exigir confirmação duplicada. Atualizar apenas a parte afetada e preservar contribuições alheias.
+Prepare the content and evidence before requesting any authorization that is actually missing. Do not require duplicate confirmation. Update only the affected part and preserve other people's contributions.
 
-## 5. Retomar e concluir
+## 5. Resume and conclude
 
-Reconsultar branch/head do PR, status do ticket, versão da página e execução de CI relacionada. Invalidar evidências afetadas por novos commits ou mudanças de requisito. Não confundir `implementado`, `validado`, `PR aberto`, `mergeado` e `publicado`; confirmar cada estado na sua fonte.
+Recheck the PR branch/head, ticket status, page version and related CI run. Invalidate evidence affected by new commits or requirement changes. Do not confuse `implemented`, `validated`, `PR open`, `merged` and `published`; confirm each state at its source.
 
-Se solicitado checkpoint local, guardar somente fontes, decisões, refs e próximas ações, sem payloads sensíveis; revalidar dados mutáveis ao retomar. Entregar ações realizadas, propostas e bloqueadas em categorias distintas.
+If a local checkpoint is requested, store only sources, decisions, refs and next actions, without sensitive payloads; revalidate mutable data when resuming. Report actions taken, proposed and blocked in separate categories.
